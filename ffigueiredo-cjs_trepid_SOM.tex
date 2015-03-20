@@ -1,0 +1,1317 @@
+\NeedsTeXFormat{LaTeX2e}[1995/12/01]
+\documentclass[10pt]{article}    
+
+% Load packages
+\usepackage{cite} % Make references as [1-4], not [1,2,3,4]
+\usepackage{url}  % Formatting web addresses  
+% \usepackage[utf8]{inputenc} %unicode support
+\urlstyle{rm}
+\usepackage{indentfirst}
+%% \setlength{\doublerulesep}{\arrayrulewidth}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage[pdftex, bookmarks, colorlinks]{hyperref}
+
+
+%% \def\includegraphic{}
+%% \def\includegraphics{}
+\usepackage{color,graphicx}
+
+
+\setlength{\topmargin}{0.0cm}
+\setlength{\textheight}{21.5cm}
+\setlength{\oddsidemargin}{0cm} 
+\setlength{\textwidth}{16.5cm}
+\setlength{\columnsep}{0.6cm}
+
+
+\begin{document}
+
+
+\title{Supplementary online material for ``An individual-based model
+  simulator for transposable elements dynamics and evolution''}
+
+
+\author{Felipe Figueiredo\footnote{ffigueiredo@ioc.fiocruz.br} \and
+  Claudio Struchiner }
+
+%% \footnote{Programa de Pós-graduação em Biologia Computacional e
+%%   Sistemas, Instituto Oswaldo Cruz, BCS/IOC/Fiocruz}
+%% \footnote{Programa de Computação Científica, PROCC/Fiocruz}
+
+
+\maketitle
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%
+\section{Overview of the simulator}
+
+%% Here we describe the overall structure of the simulator. More specific
+%% details are available in the API documentation, provided with the
+%% software.
+
+The \verb|TRepid| simulator is an Object-Oriented system, with
+individual hosts and TEs each represented by objects. It's main
+interface with the user is provided by a plain-text configuration file
+that should be present in directory of the simulation. The simulation
+sub-directory tree will be created, and data and log files written by
+the simulator as required.
+
+\subsection{The main players}
+\label{sec:main_players}
+
+The main class defines simulation objects that contain all the
+information and data related to a given simulation. Associated with
+each simulation object is a configuration object to access or modify
+any parameter of the simulation, including equations parameters, file
+names, etc. It collects all configuration parameters and variables
+from configuration files, or use defaults if values are not provided
+by the user.
+
+
+
+
+%\section{Usage of the simulator}
+
+\subsection{Basic usage: Input}
+The principal way of setting up a new simulation is through a
+configuration file called \verb|trepid.conf|, inside which the user
+defines parameters for all the models.
+
+The default configuration file that comes with the simulator has all
+parameters filled with default values, and comments explain what they
+mean. This file is divided in sections to organize semantics for the
+user. These categories are not interpreted though, since only variable
+names are used and users are free to remove the section names and
+define the config file in the order they prefer.
+
+After preparing the configuration file, the user can run the
+\verb|mmrrsim| program inside the directory where the config file is
+located. Upon starting, the simulator looks for the \verb|trepid.conf|
+file, and if found, create a directory structure for the population
+(even if the population is not saved at the end of the simulation), a
+directory for logs and results, and finally a directory for the
+Templates for the hosts with TEs. 
+
+The Templates dir is where one or more genome templates are located,
+and used to create the GM (Genetically Modified, i.e. with TEs)
+subpopulation. If the user wants t ouse a GM population, at least one
+GM template must exist. If the templates directory is previously
+non-existant, a GM population won't be created, and in this case the
+simulator aborts.
+
+If the configuration file is not found or is empty, default values
+will be used for all parameters. The same happens to any parameter not
+defined in the config file, if it is incomplete. The user can check
+what parameters were set for each simulation in the log header.
+
+\subsection{The default config file}
+\label{sec:default_config}
+
+In this section we describe all of the variables definable in the
+confi file, showing the default values as illustration. These are the
+parameters used for a very simple simulation of a Master Gene model in
+a small host population that does not have generation overlap.
+
+\subsection{General}
+\label{sec:default_config_general}
+
+{\bf Simulation time and initial subpopulations}
+
+\begin{verbatim}
+#####################################
+[General]
+# Number of generations (default: 10)
+it_max = 10
+\end{verbatim}
+
+FIXME: include other general variables, save\_*, sample\_gm,
+interactive, often\_max.
+
+\subsection{Initial}
+\label{sec:default_config_initial}
+
+FIXME: include other initial variable: init\_gender .
+
+\begin{verbatim}
+#####################################
+[Initial]
+# Initial Susceptibles (default: 900)
+S_0 = 0
+# Initial Infectious (default: 100)
+I_0 = 10000
+# Initial Removed (default: 0)
+R_0 = 0
+\end{verbatim}
+
+The parameter \verb$it_max$ determines how many iterations of the model,
+i.e., how many generations will be simulated.
+
+The $F_0$ population is determined by three initial subpopulations. In
+these parameters, the notations inspired by the SIR epidemic model of
+the early prototypes were maintained. \verb$S_0$ symbolizes the
+initial wild subpopulation, \verb$I_0$ the initial GM subpopulation
+(i.e. individuals that carry TEs) and \verb$R_0$ the Deceased or past
+individuals.
+
+If a population was previously saved to disk, the files wil be
+automatically read and the $F_0$ population will be constructed using
+those individuals. If the initial parameters for either of \verb$S_0$,
+\verb$I_0$ and \verb$R_0$ are greater than the pre-existing
+individuals, additional ones will be created to match the simulation
+criteria.
+
+
+\subsection{Reproduction}
+\label{sec:default_config_reproduction}
+
+{\bf Age structure}
+
+\begin{verbatim}
+#####################################
+[Reproduction]
+# Life expectancy (default: 4)
+age_max = 4
+# Reproductive age (default: 3)
+age_reprod = 3
+# Offspring count (default: 100)
+offspring_count = 100
+\end{verbatim}
+
+The two parameters \verb|age_max| and \verb|age_reprod| determine the
+age structure in the population. They are measured in
+generations. Setting the \verb|age_reprod| to one unit lower than
+\verb|age_max| configures a population without generation
+overlap. Setting \verb|age_max| to 2 and \verb|age_reprod| to 1
+disables the age structure in the sense that all individuals
+last only one generation after being created.
+
+\centering\noindent\rule{0.5\textwidth}{0.4pt}
+
+\begin{verbatim}
+# Recombination model (default: 1step)
+recombination_model = "none"
+\end{verbatim}
+
+The above parameters set the total offspring per couple, and turn off
+the recombination for the simulation.
+
+\centering\noindent\rule{0.5\textwidth}{0.4pt}
+
+\begin{verbatim}
+# Reproduction model (default: Logistic)
+reproduction_model="Logistic"
+
+# Logistic parameters
+# reproductive (default: 0.1)
+r = 20
+
+# carrying capacity (default: 5000)
+K = 20000
+\end{verbatim}
+
+The above options select the ecological model (in this case a logistic
+population) and define the model parameters (in this case $r$ and
+$K$).
+
+\begin{verbatim}
+# ploidy parameters (default = 2)
+ploidy = 1
+\end{verbatim}
+
+The ploidy can be artificially set to diploid or haploid. Haploid
+populations are created in the following manner: upon creation of a
+new individual, the first chromosome comes from the father and the
+second from the mother, but since only one chromosome will be considered
+throughout the simulation. The contents of both chromosomes are
+merged, possibly overwriting
+
+FIXME: portuguese.
+
+Obs: A haploidia é feita da seguinte forma: na criação do novo
+indivíduo, o primeiro cromossomo vem do pai, e o segundo vem da mãe,
+mas apenas um cromossomo final será considerado. Dessa forma, é feita
+uma fusão dos dois cromossomos originais, possivelmente sobrescrevendo
+um TE, caso haja um TE no mesmo sítio em ambos os cromossomos
+originais. Isso foi feito para garantir que haja sempre um único TE
+ativo, ao contrário do que aconteceria no caso diploide, em que um
+ativo é herdado do pai, e outro da mãe. Na geração subsequente, dois
+seriam herdados do pai e dois da mão e assim por diante, em progressão
+geométrica.
+
+\subsection{Transposition}
+\label{sec:default_config_transposition}
+
+\begin{verbatim}
+#####################################
+[Transposition]
+# Species' categories sites (default: k=0, S=30, N=70)
+killer_sites = 0
+severe_sites = 0
+neutral_sites = 200
+\end{verbatim}
+
+FIXME: portuguese.
+
+Obs: Tamanhos dos setores do cromossomo. Killer sites são os sites que
+matam o indivíduo imediatamente ao nascer, se algum estiver
+ocupado. Severe contabilizam custo de fitness e neutros não.
+
+\begin{verbatim}
+# Fitness cumulative impact of transposition (default .05)
+severe_impact = .05
+\end{verbatim}
+
+FIXME: portuguese.
+
+Obs: Esse valor é somado para cada TE que ocupar uma posição num
+severe site. O total é arredondado para cima, e esse número inteiro
+será a quantidade de prole que aquele indivíduo não será capaz de
+gerar devido aos TEs. Obs2: esse valor é calculado para cada
+indivíduo, e portanto deve ser contabilizado tanto pra o pai como para
+a mãe.
+
+\begin{verbatim}
+# Transposition model: constant, exponential or SKR (default: SKR)
+transposition_model = "constant"
+\end{verbatim}
+
+FIXME: portuguese.
+
+Obs: O modelo constant acrescenta sempre a mesma quantidade de novas
+cópias em cada gametogênese, dado que exista pelo menos uma cópia
+ativa.
+
+\begin{verbatim}
+# Transposition rate for constant and exponential model (default: .5)
+transposition_rate=1
+\end{verbatim}
+
+FIXME: portuguese.
+
+Obs: A taxa de transposição tem significados diferentes para cada
+modelo. No caso do modelo constante, significa a quantidade de cópias
+novas a ser criadas. No caso do exponencial e do SKR, a probabilidade
+de que novas cópias serão criadas, isto é, a prob. de ocorrer um
+evento de transposição naquela gametogênese.
+
+\begin{verbatim}
+# Excision rate for constant and exponential models
+excision_rate = 0
+\end{verbatim}
+
+FIXME: portuguese.
+
+Obs: análogo a taxa de transposição.
+
+\begin{verbatim}
+# Deleterious threshold (default: severe + neutral)
+# could be set to any arbitrary value
+#delete = 10
+\end{verbatim}
+
+FIXME: explain.
+
+\begin{verbatim}
+#Inactivation model: mastergene, random and progressive (default: mastergene)
+inact_model = "mastergene"
+\end{verbatim}
+
+FIXME: portuguese.
+
+Obs: A atividade (STATUS na documentação) é representada por um número
+entre 0 e 1. Qualquer número positivo representa um elemento
+ativo. Modelos de inativação: Master gene significa que TODA nova
+cópia é inativa. Random sorteia um número entre 0 e o status do TE que
+está gerando a cópia. Progressive diminui o status em razão
+constante. É usado um threshold inferior para que números muito
+pequenos sejam considerados zero, e portanto inativar cópias.
+
+
+\begin{verbatim}
+# Invasion threshold for GM sub population (default: 0.9). Set to 1 to disable.
+invasion_threshold = 0.9
+
+# Loss threshold for GM sub population (default: 0.01). Set to 0 to disable.
+loss_threshold = 0
+\end{verbatim}
+
+FIXME: explain.
+
+\subsection{Evolution}
+\label{sec:default_config_evolution}
+
+\begin{verbatim}
+#####################################
+[Evolution]
+# Probability that a mutation (substitution) will occur (default: .1)
+mutate_prob = 1
+\end{verbatim}
+
+FIXME: portuguese.
+
+Obs: A probabilidade de que uma mutaçao vai ocorrer numa transposição.
+
+\begin{verbatim}
+# Number of point mutations to be introduced in each evolutionary event (default: 2)
+mutation_count = 2
+\end{verbatim}
+
+FIXME: explain.
+
+\subsection{Output}
+\label{sec:output}
+
+Several files are produced after a simulation ends.
+
+\subsubsection{Log file}
+\label{sec:output_log}
+
+Ao longo de uma simulação, são gerados um arquivo de log, dois
+arquivos CSV (um para a demografia e um com dados de TEs) e se um
+indivíduo puder ser amostrado para que suas sequências sejam
+analisadas, também será gerado um arquivo com a sequências no formato
+FASTA e um no formato NEXUS (já representando um alinhamento pronto
+para ser usado no BEAST). Todos os arquivos tem como prefixo a data
+seguida de um número serial, de modo que várias simulações
+consecutivas fiquem organizadas em ordem cronológica. Um exemplo com
+os arquivos output estão em anexo.
+
+FIXME: portuguese.
+
+\subsubsection{CSV tables}
+\label{sec:output_csv}
+
+FIXME: explain.
+
+\subsubsection{Sampled individual}
+\label{sec:output_sample}
+
+FIXME: explain.
+
+\subsection{Advanced usage: API for Perl programmers}
+
+Although the configuration file can provide a practical input for
+several simulation scenarios, some users might have more complex
+needs. Besides the configuration file there is an API which can be
+directly accessed by softwares, scripts or an interactive shell in
+Perl language which facilitates step-by-step procedures, analysis,
+reanalysis and more detailed data acquisition.
+
+All data generated in each component can be accessed from the API, and
+accessor methods are provided for each data type for all object
+classes. Additionally, the whole generation algorithm can be bypassed
+and simulations can be manually run, step by step, and scrutinized in
+any way desired. One can change config parameters after a few
+generations for any of the models, or even the models themselves,
+insert or remove individuals in the population, et cetera.
+
+The API documentation along with the complete list of functions and
+class and object methods are provided inline with the code and can be
+accessed by the usual \verb|perldoc| command. PDF and HTML documents
+are also provided in the software package.
+
+Each simulation run is identified by a unique ID string, and all
+objects related to that simulation are tagged with this ID, so several
+simulations can be run by the same instance or script without risk of
+collision of variable values, either in batch or in parallel. We
+provide an example script to run a batch of simulations with different
+parameters.
+
+
+\section{Algorithms and models}
+
+The simulator is flexible in construction and able to produce a
+realistic scenario in which transposition events occur in finite
+populations that agree with the Wright-Fisher
+conditions \cite{HC98}. Transposable elements (TEs) replicate according
+to an arbitrary transposition model and TE sequences' evolve according
+to Kimura's infinite-sites model \cite{Taj96}, and an arbitrary model
+of molecular evolution \cite{Yan06}.
+
+\subsection{Population}
+
+%% %FIXME: colocar esse paragrafo na discussao
+
+%% The SIR model is one of the most studied epidemiological models and its
+%% simplicity is both its strength and weakness. To compensate for the
+%% latter, several modifications have been proposed in the last decades
+%% to introduce specific effects into its basic framework including Allee
+%% effect, periodicity and many others.
+
+As described above, the population has two independent structures:
+gender and age. We have drawn inspiration from the SIR epidemiological
+model to structure the population in discrete compartments. The age
+structure is also discrete, as described below.
+
+The population is divided into {\bf Wild} and {\bf GM} (genetically
+modified) compartments of hosts similarly to the SIR compartmental
+model classes \emph{Susceptible} and \emph{Infected}. There's also a
+{\bf Deceased} compartment, in analogy to the \emph{Recovered}
+compartment, where individuals from earlier generations are kept for
+future reference or analysis. A given individual cannot change from
+the {\bf Wild} to the {\bf GM} compartment, though, and vice
+versa. Instead, these compartments' dynamics evolve through
+generations of sexual reproduction of the host population.
+
+Time is measured in simulation steps representing discrete
+generations. The age structure is defined by two classes, regarding
+wither or not a host is mature enough to reproduce. Each new
+individual remains non-reproductive for a maturation period, after
+which it becomes mature and enter the reproductive pool in the
+population.
+
+Age of sexual maturity and maximum lifespan are passed to the
+simulator as configuration parameters by the user. Default parameters
+for maturation, lifespan and offspring count reflect behaviour
+expected for strongly $r$-selected species with no generation overlap,
+suitable for modeling some insect populations such as mosquitoes or
+fruit flies.
+
+\bigskip
+\par
+\begin{center}
+\mbox{
+  \begin{tabular}{|c|c|}
+    \hline \multicolumn{2}{|c|}{Default age parameters}\\ \hline\hline
+    Initial age & {\bf 1}   \\ \hline
+    Reproductive age & {\bf 3}  \\ \hline
+    Maximum age & {\bf 4}    \\ \hline
+  \end{tabular}
+}
+\end{center}
+\bigskip
+
+The growth rate of the population is determined at the beginning of
+each generation from an arbitrary ecological model (see below), and
+from this rate the net income of new individuals for the next
+generation is obtained. The necessary amount of reproductive
+encounters to reach the appropriate number of new individuals for the
+next generation is then determined by dividing the total income by the
+expected number of offspring per couple as indicated in equation
+(\ref{eq:couples}). Note that assuming a non-monogamous species, this
+is equal to the number of females expected to mate in this generation,
+as there should always be enough males to impregnate any available
+fertile females.
+
+\begin{equation}
+  \label{eq:couples}
+  \mbox{reproductive encounters} = 
+  \frac{\mbox{total income of new hosts}}
+       {\mbox{expected number of offspring}} 
+\end{equation}
+
+Couples are then pooled from the available mature population to
+satisfy the necessary number of reproductive encounters. We are
+modelling host species that are not monogamous, so males are chosen
+from the population with replacement while females are chosen without
+replacement. This approximates the random mating behaviour (i.e., no
+spatial structure), while retaining the realistic behaviour that a
+given female can only copulate at most once per generation.
+
+%% Age of sexual maturity and expected number of offspring per couple are
+%% passed as configuration parameters to the simulator by the user in a
+%% plain text configuration file, along with the logistic parameters and
+%% options for other sections of the simulator. Default parameters for
+%% maturation, reproductive age, maximum age were chosen as to avoid
+%% overlapping of generations.
+
+The host fitness is defined as the total offspring count that host has
+generated. The mean fitness over the population for a given generation
+is the arithmetic mean of the fitnesses of all live individuals at the
+end of the generation.
+
+The offspring amount for each reproductive encounter could be drawn
+from a distribution whose mean is determined for the population. For
+simplicity, however, we consider in this version of the simulator a
+fixed initial amount of offspring for each couple. From this number it
+will be subtracted a quantity proportional to the impact TEs might
+have on the host fecundity. We postpone the definition of fitness
+impact and how it is calculated to the transposition model section.
+
+Migration between meta-populations can be introduced in the simulator
+by the use of several geographic patches. Each of these patches is a
+micro-environment of its own, with the same compartment structure. For
+simplicity, in this version of the simulator we consider only one
+geographic patch, so migration events are ignored. This feature is
+planned for a future release.
+
+%% The probability of a particular male copulating with a particular
+%% female is therefore proportional to the population density in the
+%% patch, and inversely proportional to the distance between the patches
+%% they are in.
+
+
+\subsubsection{Ecological Model}
+
+At each generation, the total number of new offspring must be
+determined before mating begins. To this end, an ecological model is
+consulted to determine the dynamics of the population in the absence
+of external influence (in our case, impact from TEs, which is
+described below).
+
+The simulator is modular in the sense that the ecological and
+transposition models are implemented and considered independently from
+the rest of the system framework, so they function as exchangeable
+parts in the mechanism. This way, many other models can be included in
+the simulator in order to suit particular demands for each of these
+sections. 
+
+Indeed, any population model can be used in this system provided it
+can be represented in the form:
+
+\begin{equation}
+  p_{n+1} = F(p_n)
+\end{equation}
+
+where $F$ is a function that depends on the current population size
+$p_n$. It is not required that F be deterministic, i.e., depends only
+on $p_n$. It can optionally depend on a random variable $\xi_n$ to
+introduce intrinsic stochasticity in the growth rate:
+
+\begin{equation}
+  p_{n+1} = F(p_n,\xi_n)
+\end{equation}
+
+As a result, it is also not required that the model should be written
+explicitly as a differential or difference equation. The only
+requisite is that the input is the current population size, and the
+output is the expected quantity for the next generation.
+
+We currently implement five population models, two models of
+unrestricted growth and and two models for saturated growth: constant
+population, constant growth (linear), exponential growth (or decay),
+the Logistic and the Hassel \cite{Has75} equations. All of these are
+discretized from Ordinary Differential Equations, as described in
+section \ref{sec:impl_pop_models}.
+
+%% We implemented two population models of interest in the simulator: the
+%% logistic equation
+
+%% \begin{equation}
+%%   \label{eq:logistic}
+%%   \dot{p} = r p \left(1-\frac{p}{K}\right)
+%% \end{equation}
+
+%% and the Hassel equation \cite{Has75} 
+
+%% \begin{equation}
+%%   \label{eq:hassel}
+%%   \dot{p} = r p \left(1+\frac{p}{K} \right)^{-\beta}
+%% \end{equation}
+
+%% where $r,K,\beta>0$. The parameter $r$ is the reproductive rate, $K$
+%% is the support capacity of the population and $\beta$ is the
+%% intra-specific competition exponent. For $\beta = 1$, the Hassel model
+%% is identical to the logistic model.
+
+\subsubsection{Age structure}
+
+The population has an age structure in which it is divided in discrete
+classes. The behavior of such models has been thoroughly studied in
+the ecological literature \cite{nisbet82}.
+
+One can configure the parameters to set any arbitrary number of age
+classes for a simulation, but there are two age classes of obvious
+interest: before and after reaching the reproductive age. The
+durations for the maturation stage and the adult stage last are
+selected as configuration parameters to the simulator, and can be
+chosen to reproduce several scenarios, according to the organism being
+modeled. The default values for maturation and longevity are
+appropriate to species that don't have generation overlap, such as
+most insects.
+
+(FIXME: mover para outra seção) The default value total offspring for
+each reproductive encounter is also selected as to represent
+$r$-selected species with high fecundity and high mortality, such as
+insects.
+
+%Leslie matrix $2 \times 2$
+
+\subsection{Molecular evolution}
+
+\subsubsection{The genome}
+
+The genome in each individual is composed by two chromosomes, and each
+chromosome is represented discretely as a list of insertion sites that
+act as \emph{loci} for TEs. Each insertion site in each chromosome can
+therefore be either empty or occupied by a TE. To reflect the fact
+that some insertions can cause disadvantageous, deleterious or even
+fatal mutations on the host, we categorize the insertion sites into
+three classes: fatal (\emph{killer sites}), meaning they disrupt
+essential genes in a way they render the cell useless; severe
+(\emph{severe sites}), which may disrupt non-essential genes, or
+metabolic pathways, and neutral (\emph{neutral sites}). Under the
+hypothesis that within a species genomes from different hosts should
+bear more similarities than differences, the number of insertion sites
+in each of the above classes should not vary much within a species,
+and could be considered species specific if such numbers can be
+estimated based on genome size.
+
+The genome size in this simulator is thus defined as a result of
+config parameters choices. Each chromosome has $\eta = k + s + n$
+\emph{loci}, each of which can contain one or zero TEs. These sites
+can be reordered, without loss of generality, in such a way that the
+first $k$ sites are \emph{killer sites}, the next $s$ are \emph{severe
+  sites}, and the remaining $n$ are of \emph{neutral sites}.
+
+%% Since the information contained in each twin strand in the pair is
+%% identical, we refer to each helicoidal pair of strands simply as ``DNA
+%% strand'', so the two strands mentioned from now on actually means the
+%% two strand pairs.
+
+%% Since the host species is diploid, TE copies can reside on any (most
+%% likely both) of DNA molecules, and only one copy of each strand is
+%% passed to offspring, we must keep track of which strand and insertion
+%% site each TE copy is stored. The child receives all copies of TEs
+%% currently present in one of the DNA strands of each parent, in
+%% addition to any extra copies produced by replication of the parent's
+%% elements.
+
+\subsubsection{Recombination and ploidy}
+
+A model of crossing-over recombination is optionally used to promote
+additional variability of chromosome content. It is implemented in
+three variants called \emph{1-step}, \emph{2-step} and
+\emph{all-step}. The resulting gamete retains the original size in
+insertion sites, and each site is filled consulting one of the
+parent's corresponding site from one of the parental gamete.
+
+In the \emph{1-step} model a site is chosen at random and this site is
+the cutting point between the parts coming from each chromosome. The
+resulting gamete will be filled up to this site identical to the first
+chromosome and then the remaining sites are merged from the second
+chromosome.
+
+The \emph{2-step} model is similar to the above, but there are two
+cutting points instead of one. This means the first and third sections
+of the gamete are merged from the first chromosome and the second is
+merged from the other chromosome.
+
+There's also an \emph{all-step} model that abstracts from the two
+models above in the sense that every site is a cutting point. This way
+every site is taken from a random chromosome preserving only the order
+from which it came. This will provide maximum variability considering
+recombination events.
+
+If none of the above recombination models is selected, the resulting
+gamete will be equal to one of the parental chromosomes, chosen at
+random.
+
+Additionally, although we are mainly interested in simulating sexual
+populations, a workaround is provided to represent haploid
+simulations, for the benefit of simplicity. If this option is chosen,
+the second chromosome of the offspring being created is always
+ignored, and its contents copied to the first one respecting the
+original chromosome site, possibly overwriting an existing TE that
+previously existed there. This ``haploid sexual population'' is a
+practical way of creating simple simulations and hypotheses.
+
+\subsubsection{The evolutionary model}
+
+Over time mutations occur and are accumulated in the genome of
+simulated hosts. Whenever a mutation occurs a substitution drawn from
+an evolutionary model.
+
+We implemented a simple model that follow the assumptions of the
+Jukes-Cantor substitution model \cite{JC69}. All mutations are
+substitutions and equally likely to occur. As a result no special
+assumption is made over sites in the sequence which are more likely to
+change, nor transition/transversion bias. \emph{ All sites are
+  considered equally likely to change as well as all nucleotides
+  changes are considered equally likely to occur.}
+
+As happens with the ecological section, almost any evolutionary model
+can be implemented in the simulator. The requirement here is that the
+input is the original sequence, and the output is the mutated
+sequence. Which changes are allowed or disallowed are completely up to
+the model in question. The evolutionary model is any model or function
+that, given an input nucleotide sequence, outputs a similar homologous
+sequence.
+
+\subsection{Transposition model}
+
+The existence of TEs in a host genome can cause several kinds of
+impacts in the host, ranging from fitness reduction, longevity
+reduction and even host inviability. There are several ways to model
+both how the TEs replicate in the genome, and the impact that such
+replication causes in the host that carry them.
+
+The three key elements to be considered in the modeling of these
+phenomena are the way the total amount of TE copies vary, the ability
+of TEs to be transposed and the impact that each TE might cause in the
+host.
+
+\subsubsection{Activity cycle}
+The initial phase of the TE invasion, should be regarded as the period
+during which the TE is most active. Otherwise, genetic drift may lead
+the TE to extinction \cite{rouzic2005b}. After this initial phase, if
+the TE succeeds in fixating in the host population, it must decrease
+its activity so as not to disrupt too much the host's fertility.
+
+%% \begin{figure}
+%% \includegraphics[width=1\textwidth]{figures/cycle.png}
+%% \caption{Transposon cycle (\cite{kidwell2001})}
+%% \end{figure}
+
+Transposable elements usually undergo some degeneration process, that
+inactivates TE copies. We take this phenomenon into account in the
+model in the form of an \emph{status score}, that is a fixed number
+between zero and one for each TE. When a status of zero is selected,
+it renders the TE inactive. This score is also used to determine
+whether of not the TE is actively transposing.
+
+Every time a new TE is created from an existing TE, the new copy's
+\emph{status score} is chosen to be less than the original score. How
+fast this score drops to zero in successive transpositions can be
+implemented in several ways, and could be used to reproduce several
+interesting scenarios:
+
+\begin{itemize}
+\item if the status is constant and zero, then every new copy is
+  inactive, and the only active copy is the original one. This is
+  known as the \emph{master gene model};
+
+\item if the status is constant and non-zero, then every new copy is
+  active, which represents the \emph{transposon model};
+
+\item the status can decrease in a constant rate, which will render
+  new copies inactive after a few 
+
+\item the new status can be chosen randomly, between zero and the
+  original value
+\end{itemize}
+
+\subsubsection{Forms of impact on hosts}
+
+New TEs can cause an impact on the host, depending on where in the
+genome it lands when created. This is implemented in the three
+categories of insertion sites where TEs might appear. If a TE is
+created in a \emph{killer site}, it will be considered a deleterious
+transposition. Hosts can be born dead due to deleterious
+transposition, and otherwise the impact will be considered a fitness
+toll, thus the host will have a lower offspring count when compared.
+
+All transposition models can be used with or without individual
+fitness impact on hosts, as an additive fitness impact can be
+optionally defined as a config parameter, which is a real number. All
+elements that have such an effect on the host are accounted for and
+their relative impact is summed and rounded up. This total impact is
+the total amount of offspring this particular host will be unable to
+produce due to disadvantageous transpositions in its genome.
+
+Lifespan can also be decreased if the impact is too great, albeit not
+fatal (as proposed in \cite{rouzic2005}). We include this
+characteristic in the model as follows. First we take the ratio
+between the total fitness impact as calculated above and the maximum
+age defined in the config for the simulation, then this ratio is
+rounded down. This integer is the total age classes the host will be
+unable to achieve due to deleterious transpositions.
+
+
+%\subsubsection{Changes in the ammount of copies}
+
+\subsubsection{TE activity dynamics}
+
+Several transposition models can be implemented in the system. We
+implemented both neutral models in respect to natural selection
+(constant and exponential growth), and a transposition model that
+takes into account intrinsic deleterious effects by insertion of new
+elements \cite{SKR05}.
+
+Transposition models implemented in our framework have two main
+components: one for the the acquisition of new copies and one for the
+excision of existing copies.
+
+The acquisition model (usually called by a \verb|transpose()|
+function) determines the total amount of new copies that should be
+created for the gamete. The excision model (usually called by a
+\verb|excise()| function) is the exact opposite. Parameter choices in
+the simulation configuration should consider cases where the creation
+of new copies never falls behind the deletion of old copies, otherwise
+the 
+
+%% Here we describe one of the simplest transposition models we
+%% implemented in the simulator. It doesn't take into account any
+%% regulation due to selection on the host population, so the only
+%% regulation imposed on the TE family, besides self-regulation, is the
+%% excision of TE copies. The analytic behaviour of this model is
+%% thoroughly described in \cite{rouzic2005}.
+
+%% \begin{equation}
+%%   \Delta c_n = (u_n - e) c_n
+%% \end{equation}
+
+%% where $c_n$ is the TE count at time $n$, $u_n$ is a decreasing
+%% positive function of $n$ and $e>0$. According to this model, the TE
+%% can invade the host population provided $u_n$ is larger than $e$ for
+%% small $n$ \cite{rouzic2005}, and can fixate if $u_n$ never decreases
+%% below $e$. Furthermore, TE copy number reaches an equilibrium if $u_n$
+%% converges to $e$ for large $n$.
+
+
+%% \subsection{The generation algorithm}
+
+%% The general algorithm that happens at each generation models the basic
+%% life cycle of a diploid sexual species.
+
+%% \begin{enumerate}
+%% \item Host couples are chosen randomly from available mature hosts at
+%%   the beginning of each reproductive season. Males are chosen with
+%%   replacement, females are chosen without replacement. 
+
+%% \item Each adult bears new gametes after transposition and
+%%   recombination.
+
+%% \item Transposition draws a recruitment amount of new TE copies and
+%%   the deletion amount of excised copies from the transposition
+%%   model. This changes the content of the gametes in terms of
+%%   availability of TEs.
+
+%% \item Mutations are sampled from the evolutionary model for newly
+%%   created TE copies.
+
+%% \item Recombination provides additional shuffling of gamete contents.
+
+%% \item Each couple gives birth to a number of offspring defined by the
+%%   user as a parameter.
+
+%% \item Each newborn individual is composed of one chromosome from each
+%%   of its parents, and new individuals are introduced to the population
+%%   pool.
+
+%% \item The fitness cost from TEs in newborn individuals is calculated
+%%   and any that exceeds a given threshold is killed before birth and
+%%   removed from the population. 
+
+%% \item The age of every surviving individuals is incremented ate the
+%%   end of the generation.
+
+%% %% \item Newborn individuals inherit one chromosome from each parent,
+%% %%   after recombination, transposition and excision of active TEs.
+
+%% \end{enumerate}
+
+% FIXME: diagram in xfig.
+
+\subsection{The population genealogy}
+%% Since in the absence of transposition impact the population grows
+%% according to the logistic model, we expect $p_n$ not to vary much
+%% after a large number of generations, when the parameters are chosen
+%% as to minimize phenotypic altering mutations induced by transposition.
+
+We are interested in analyzing sequence data from an individual to
+reconstruct the phylogenetic relations between its TEs. Therefore it
+becomes necessary to compare the reconstructed history with the real
+parental history we simulated.
+
+Each host is identified by a name defined as a serial number, and
+carries the names of both parents. A simple recursive breadth-first
+algorithm is used to recover the names of parents, grandparents and so
+on. As such the genealogy can be fully reconstructed up to any valid
+time interval. The population stored in the {\bf Deceased}
+compartment can be consulted to create genealogies of different depths
+after the execution of the simulation, or inspect each individual for
+it's genome, in order to compare the elements present in the sampled
+individual, and its ancestors.
+
+\subsection{Sources of stochasticity}
+Although most of models described so far involve deterministic models
+the overall behavior is stochastic. This happens due to both sampling
+effects and the fact that the system is an individual based model, or
+agent based model \cite{Bon02}. The following are sources of such
+uncertainty:
+
+\begin{enumerate}
+
+\item sampling of individuals in finite population
+\label{item:finite}
+
+\item recombination
+\label{item:recombination}
+
+\item replication and excision of TEs
+\label{item:transposition}
+
+\item mutations (substitutions) within TE sequences
+\label{item:mutation}
+
+\end{enumerate}
+
+The item \ref{item:finite} refers to Wright-Fisher models of
+populations \cite{HC98}. Since we're simulating small populations
+(typically $<10^5$, but there's no restriction to population size)
+there is a sampling effect to be considered when an individual is
+chosen for reproduction. Should we simulate very large simulations the
+importance of sampling effects could be diminished, and we could
+approximate the behaviour of an infinite population (as in a
+Hardy-Weinberg population).
+
+Since we're simulating sexual populations, we incorporate
+recombination by crossing over of games. This can be implemented in
+several ways, and the item \ref{item:recombination} is related to the
+recombination model used to promote additional variability to the
+chromosome pool.
+
+FIXME: falta terminar essa seção.
+
+The item \ref{item:transposition} is related to the availability of
+new TEs in the chromosomes (as defined by different \emph{loci} and
+sequence).
+
+
+The item \ref{item:mutation} is related to the evolutionary model used
+to promote variability across generations.
+
+
+
+
+\section{Availability}
+The simulator has been developed and tested in GNU/Linux systems
+running Ubuntu Linux. As it is a portable language, it should run on
+any system for which its dependencies are available. Those include Mac
+OS X and Windows, besides UNIX/Linux in general. Packaging has been
+prepared following guidelines typical of Perl modules and
+applications, which should ease the installation in any platform Perl
+is available with the help of the CPAN
+framework\footnote{http://www.cpan.org}, as well as Debian/Ubuntu DEB
+packages.
+
+The software is released in the open-source license GPL and is
+available from \url{https://launchpad.net/trepid} .
+
+
+\section{Implementation details}
+\label{sec:implementation}
+
+
+\subsection{Population models}
+\label{sec:impl_pop_models}
+
+\subsubsection{Implementation of the logistic model}
+
+We will use the logistic equation as an example to describe the
+implementation because of its simplicity; the implementation of the
+Hassel model is analogous.
+
+The differential equation is discretized as a single iteration of
+Euler's method, with a step size $h=1$. This results in formula
+\eqref{eq:logistic_implem}:
+
+\begin{equation}
+  \label{eq:logistic_implem}
+  p_{n+1} - p_n = \Delta p = Ceiling \left(  
+  \frac{r \times p \times \left(1-\frac{p}{K}\right)}
+       {\hbox{offspring count}}  
+       \right)
+\end{equation}
+
+where $Ceiling(x)$ ($Floor(x)$) is the smallest (greatest) integer
+greater (less) than or equal to $x$. Note that this implementation
+already takes into account the normalization by the total offspring
+count as per equation \eqref{eq:couples}, so the result is the number
+of reproducing couples for that generation, instead of the total
+income of new individuals.
+
+This model is deterministic so the caching system described in section
+\ref{section:impl_caching} is used for it.
+
+\subsubsection{Constant model}
+
+The simplest population model available is arguably the constant
+population, which assumes equilibrium and zero net migration. 
+
+The parameter considered for the constant growth is the $r$ config
+parameter (reproductive rate), which is used in this case as the total
+amount of new individuals to be created for each generation, rounded
+up if it's not already an integer.
+
+\begin{equation}
+  \Delta p_n = r
+\end{equation}
+
+
+\subsection{Transposition models}
+\label{sec:impl_transp_models}
+\subsubsection{Exponential model}
+
+The exponential model is a generalization of the constant model, but
+instead of only depending on a fixed quantity, it also depends on the
+relative number of copies existing at each time. This model also
+belongs to a wider class of neutral models that don't take into
+account any intrinsic regulation of copy number by fitness
+disadvantage to the host \cite{rouzic2005}, where the transposition
+rate $u_n$ is a bounded function of $c_n$ and equilibrium is attained
+when it saturates at the same value of the excision rate $e$.
+
+\begin{equation}
+  \Delta c_n = (u_n - e) c_n
+\end{equation}
+
+Considering the transposition rate $u_n$ constant (therefore $u$), it
+can be rewritten as:
+
+\begin{equation}
+ c_{n+1} - c_n = \Delta c = (u - e) c
+\end{equation}
+
+that only depends (deterministically) on the current quantity of
+copies $c$ in the reproducing host. As such, the same discretization
+scheme used in the population models can be used to provide a
+cache-able model that continually increases or decreases copy number
+over generations, depending on the value of $u-e$. If $u-e >0$, the
+total copy number will always increase, whereas if $u-e<0$ the
+simulator will tend to remove more copies that are added.
+
+The model is consulted each time a host produces a gamete both for the
+amount of new TE copies to be created, and the amount of existing
+copies to be excised. If there must be new TE copies created, for each
+new copy a random active TE is sampled (with replacement) from the
+host genome, and replicated. Afterwards, if there must be excision of
+existing copies, for each excised copy the genome is sampled for a
+random TE (without replacement) and this copy is removed from the
+genome. Note that only active TEs get transposed, but any TE can be
+excised.
+
+\subsubsection{Constant model}
+
+The constant model of transposition is analogous to the respective
+population model counterpart. At each time the model is consulted for
+the amount of new TE copies to be created, the transposition rate
+config parameter $transposition\_rate$ is used as the total amount of
+new copies to be generated (rounded up). There is no significant
+dynamics in regard to the copy number growth, and it's not bounded per
+individual, except for the total number of insertion sites in the
+genome, defined in the config file ($killer\_sites$, $severe\_sites$
+and $neutral\_sites$). 
+
+The excision of copies is also constant, defined by the config
+parameter $e$ as the total amount of previously existing TE copies to
+be removed from the gamete.
+
+\begin{equation}
+  \Delta c_n = u - e
+\end{equation}
+
+
+\subsubsection{SKR model}
+
+This model assumes an intrinsic self-regulation of TE copy number, and
+can assume various shapes and growth forms. The original article
+proposes that the form of the $U(c_n)$ function can be chosen as any
+functions that share the qualitative behaviour described, and suggests
+(and tests) three forms indexed as $U_1$, $U_2$ and $U_3$ that we
+reproduced in this framework.
+
+\begin{equation}
+  c_{n+1} = Ceiling(c_n + c_n \times T_0 \times U (c_n ))
+\end{equation}
+
+\begin{equation}
+  U_1(c) = 2^{(-c/C_{0.5})}
+\end{equation}
+
+\begin{equation}
+  U_2 (c) = 1 - \frac{c^5} {(C_{0.5}^5 + c^5 )}
+\end{equation}
+
+\begin{equation}
+  U_3 (c) = 1 + (c - \frac{0.5}{C_{0.5}} )
+\end{equation}
+
+Transposition with this model is provided by the preceding equations,
+while excision is provided by the exact same function of the
+exponential model.
+
+\subsection{Caching of deterministic models}
+\label{section:impl_caching}
+
+In order to save unnecessary calculations, caching of model data is
+implemented for both population and transposition models. All values
+calculated for deterministic models are cached to avoid the
+performance toll of unnecessary repeated calculations. This cache is
+implemented as a hash\footnote{Sometimes referred to as an associative
+  array.}, and is consulted before each calculation to see if it's
+necessary.
+
+The cached data are stored independently per simulation and per data
+type (population or transposition), so in case a user wants to
+instantiate several different simulations in the same
+session \footnote{This functionally requires usage of the library via
+  the API. A sample script is provided as an example for
+  programmers.}, data from different simulations are guaranteed not to
+mix.
+
+
+\section{Data structures}
+The model is implemented in Perl5, using its object-oriented
+paradigm. The main classes \verb|TRepid::Population|,
+\verb|TRepid::Host| and \verb|TRepid::TE| define, respectively,
+objects for the population, the hosts that constitute the population
+and the TEs that populate each host genome.
+
+Two classes inherit methods from Bioperl classes \cite{SBB+02}. The TE
+class inherits the \verb|Bio::Seq| class, and the Host class inherits
+the \verb|Bio::SeqIO| class. This guarantees the simulator can import
+and export sequences using a great range of sequence formats. It also
+uses the abstract model of representing DNA sequences provided by the
+Bioperl project in a way that unifies the usage of any sequence format
+(Fasta, genbank, embl, swissprot, etc) so that any of these formats
+can be used at the discretion of the user. We provide a wrapper for
+including header information in the Fasta format, which we describe in
+detail in a later section.
+
+The documentation of the API is bundled within the code with the POD
+(Plain Old Documentation) format, which can be accessed by the
+ordinary means of any Perl distribution. Besides being available
+inline in the code, all this material is also converted and provided
+in more convenient formats like HTML and PDF.
+
+\subsection{Host data structure}
+The structure inherited from \verb|Bio::SeqIO| provide methods to
+collect and save sequences from a file, which inspired an
+implementation for a file-based storage. Besides these
+general-purposed methods we defined some object attributes to store
+meta-data related to each individual like its name, age, gender,
+fitness, the two chromosomes the file name to which the \verb|Host|
+object is associated.
+
+Each of the two chromosomes is an array, and each of its positions
+stores a reference for a TE object if one is present. Methods for
+consulting the number or position of TEs and de-reference them are
+provided in the class API.
+
+\subsection{Population data structure}
+The object attributes for the \verb|Population| class store
+information related to where the files are stored in disk, and some
+statistics that are frequently consulted.
+
+%% The population is stored in a hash with the host name as hash key and
+%% the reference to the \verb|Host| object as the hash value. The
+%% reference to this hash is stored in a scalar object attribute
+%% \verb|POP|.
+
+\subsection{TE data structure}
+
+Besides the structure inherited from \verb|Bio::Seq|, which includes
+methods for setting and retrieving several meta-data as the sequence
+string, header information, etc.
+
+
+
+\subsection{Meta-data format for Fasta sequences}
+
+We default to using sequences in Fasta format. To this end, we propose
+a protocol for inserting meta-data into the Fasta header and a set of
+corresponding parser (writer) methods in order to retrieve (save) the
+corresponding information.
+
+%% This is the template for a typical Fasta header as used in the TRepid
+%% simulator. The fields are separated by colons (:), and the following template
+%% shows the type of variable to be expected in each field.
+
+\bigskip
+\verb|>string:int:int:real|
+\bigskip
+
+The first field (string) denotes the {\bf TE description}. It can vary
+in size and can contain spaces. Usually it comprises the whole Fasta
+header if a real sequence is used, as acquired from any genomic
+database, should one such sequence be used.
+
+The next two fields that contain integer numbers. The first is the
+{\bf site} position in the chromosome, and the second defines in which
+{\bf chromosome} this particular TE is located. The total number of
+sites available can be chosen by the user, and the default is 100
+positions (from 0 to 99). There are always two chromosomes (denoted by
+the numbers 0 and 1) since we are modelling sexual diploid
+populations.
+
+The last field is a real number, in the interval $[0,1]$. It describes
+the {\bf status score} of activity for that TE, where any non-zero
+value means the TE is active. Each new copy generated from this copy
+should have a lower score, effectively reproducing a deactivation
+function for the TE family.
+
+
+%% - Field Fitness (real)
+%% Characterizes the strain transmissibility, in the probability of it
+%% being transfered.
+%% Can assume values in the [0,1] interval.
+%% A value of 0 means the strain is inactive.
+
+%% The basic FASTA header is incremented with model information from
+%% several coded fields, separated by colon (:).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \section{Authors contributions}
+%%     Text for this section \ldots
+
+
+
+%% FIXME: incluir discussões sobre:
+
+%% - Gene drive system x mechanism (James 2005, Sinkins 2006) \cite{james2005,SG06}
+
+%% - wright-fisher models (livro hartl)\cite{HC98}
+
+%% - finite population
+
+%% - infinite-sites model, infinite-allelles model \cite{Taj96}
+
+%% - forward-time simulator (paper SFS, papers afins)
+
+%% - agent-based model \cite{Bon02}
+
+%% - phylodynamics (paper volz, papers claudio) \cite{VKP+09,SMT+09}
+
+
+
+
+\bibliographystyle{natbib}  % Style BST file
+\bibliography{mybibtex}      % Bibliography file (usually '*.bib' )
+%% }
+
+%%%%%%%%%%%
+
+
+
+%% \appendix
+%% \section{API description}
+
+%% The following sections document the API of the simulator, which is
+%% available for scripting arbitrary simulations in the Perl
+%% language. The main classes are described here in this document, and
+%% the classes of  \ldots
+
+%% \section{TRepid}
+%% \input{Documentation/TRepid}
+
+%% \section{TRepid::Host}
+%% \input{Documentation/Host}
+
+%% \section{TRepid::Population}
+%% \input{Documentation/Population}
+
+%% \section{TRepid::TE}
+%% \input{Documentation/TE}
+
+%% \section{TRepid::Population::Model}
+%% \input{Documentation/Population-Model}
+
+%% \section{TRepid::TE::Model}
+%% \input{Documentation/TE-Model}
+
+%% \section{TRepid::Host::Genealogy}
+%% \input{Documentation/Host-Genealogy}
+
+
+\end{document}
+
+
+
+
+
+
+

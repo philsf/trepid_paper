@@ -1,0 +1,580 @@
+\subsection{NAME\label{NAME}\index{NAME}}
+
+
+TRepid::Population
+
+\subsection{DESCRIPTION\label{DESCRIPTION}\index{DESCRIPTION}}
+
+
+Population class for TRepid
+
+\subsubsection*{OBJECT ATTRIBUTES\label{OBJECT_ATTRIBUTES}\index{OBJECT ATTRIBUTES}}
+\paragraph*{DATADIR\label{DATADIR}\index{DATADIR}}
+
+
+The directory where the population is stored on disk.
+
+\paragraph*{POP\label{POP}\index{POP}}
+
+
+Hash reference of TRepid::Host indexed by Host name.
+
+\paragraph*{DEAD\label{DEAD}\index{DEAD}}
+
+
+see POP
+
+\paragraph*{SIZE\label{SIZE}\index{SIZE}}
+
+
+The size of the population.
+
+\paragraph*{TE\label{TE}\index{TE}}
+
+
+How many TEs (total) there are in the population.
+
+\paragraph*{FITNESS\label{FITNESS}\index{FITNESS}}
+
+
+The mean fitness of the population
+
+\paragraph*{LOG\label{LOG}\index{LOG}}
+
+
+Contatenation of strings (log messages), that can be saved to logfile.
+
+\subsection{METHODS\label{METHODS}\index{METHODS}}
+\subsubsection*{Methods for population management\label{Methods_for_population_management}\index{Methods for population management}}
+
+
+The following methods are available from this class.
+
+
+
+Internal methods are usually preceded with a \_
+
+\paragraph*{new\label{new}\index{new}}
+\begin{verbatim}
+ Title   : new
+ Usage   : $pop->new(DATADIR=>"data")
+ Function: Creates a new population
+ Example :
+ Returns :
+ Args    : 
+ Requires: DATADIR or ($data_dir in TRepid::Conf)
+\end{verbatim}
+
+
+The new() method initializes an empty population object, ready to be
+created (with init()) or loaded from disk (with collect()).
+
+\paragraph*{collect\label{collect}\index{collect}}
+\begin{verbatim}
+ Title   : collect
+ Usage   : $pop->collect
+ Function: Loads existing population from disk into memory
+ Example :
+ Returns : POP
+ Args    : none
+ Requires: DATADIR
+\end{verbatim}
+
+
+The collect() method will create one TRepid::Host object per file
+found in the DATADIR directory, which is assumed to be set, and
+exist. Each filename will be automatically parsed by the proper method
+in the Hosts class.
+
+\paragraph*{collect\_fast\label{collect_fast}\index{collect\ fast}}
+\begin{verbatim}
+ Title   : collect_fast
+ Usage   : $pop->collect_fast
+ Function: Loads existing population from disk into memory
+ Example :
+ Returns : POP
+ Args    : 
+ Requires: DATADIR
+\end{verbatim}
+
+
+Same as collect() method, but only parses Wild and GM directories (not
+Deceased)
+
+\paragraph*{init\label{init}\index{init}}
+\begin{verbatim}
+ Title   : init
+ Usage   : $pop->init
+ Function: Inits a new population in the disk
+ Example :
+ Returns : POP
+ Args    : 
+ Requires: DATADIR
+\end{verbatim}
+\paragraph*{clear\label{clear}\index{clear}}
+\begin{verbatim}
+ Title   : clear
+ Usage   : $pop->clear
+ Function: Clears the whole population from memory
+ Example :
+ Returns :
+ Args    : 
+ Requires: POP, DEAD
+\end{verbatim}
+
+
+Deletes the references for all TRepid::Host objects, forcing perl to
+clear them from memory.
+
+\paragraph*{wipe\label{wipe}\index{wipe}}
+\begin{verbatim}
+ Title   : wipe
+ Usage   : &TRepid::Population::wipe
+ Function: Fast way to clean the whole population on disk
+ Example :
+ Returns :
+ Args    : 
+ Requires:
+\end{verbatim}
+
+
+Fast-deletes all files in the compartment sub-directories of DATADIR.
+
+
+
+Obs: this is a function, not a method!
+
+\paragraph*{pop\label{pop}\index{pop}}
+\begin{verbatim}
+ Title   : pop
+ Usage   : $ref = $population->pop
+ Function: Returns the live population 
+ Example :
+ Returns : Reference of a hash of TRepid::Host objects
+ Args    :
+ Requires: POP
+\end{verbatim}
+
+
+The hash is indexed by the host's name, i.e., (key,value)=(name,obj).
+
+\paragraph*{dead\label{dead}\index{dead}}
+\begin{verbatim}
+ Title   : dead
+ Usage   : @dead = $pop->dead
+ Function: Returns the dead population
+ Example :
+ Returns : Reference of a hash of TRepid::Host objects
+ Args    :
+ Requires: DEAD
+\end{verbatim}
+
+
+The hash is indexed by the host's name, i.e., (key,value)=(name,obj).
+
+\paragraph*{couple\label{couple}\index{couple}}
+\begin{verbatim}
+ Title   : couple
+ Usage   : @couple = $pop->couple
+ Function: Choose Male and Female, and copulate them
+ Example :
+ Returns :
+ Args    : list of TRepid::Host names
+ Requires: POP
+\end{verbatim}
+
+
+Choose a random mating pair in the population, suitable for input to
+offpsring().
+
+\paragraph*{offspring\label{offspring}\index{offspring}}
+\begin{verbatim}
+ Title   : offspring
+ Usage   : $child = $pop->offspring(@couple)
+ Function: Copulate Male and Female and generate one offspring
+ Example : $child = $pop->offspring("adam", "eve", "caim")
+ Returns : new TRepid::Host object
+\end{verbatim}
+\begin{verbatim}
+ Args    : two string parameters (male and female parents names)
+           [optional] third argument (offspring's name)
+\end{verbatim}
+\begin{verbatim}
+ Requires: POP
+\end{verbatim}
+
+
+The iteration needed for multiple offsprings is not done by this method.
+
+\paragraph*{sample\label{sample}\index{sample}}
+\begin{verbatim}
+ Title   : sample
+ Usage   : $host = $pop->sample
+ Function: Samples the population for a random host
+ Example : $gm_host = $pop->sample( $pop->gm )
+ Returns : string (TRepid::Host name)
+ Args    : [optional] list of TRepid::Host names
+ Requires: POP
+\end{verbatim}
+\paragraph*{syncFS\label{syncFS}\index{syncFS}}
+\begin{verbatim}
+ Title   : syncFS
+ Usage   : $pop->syncFS
+ Function: Saves changes to Hosts' files on disk
+ Example :
+ Returns :
+ Args    :
+ Requires: POP, DEAD
+\end{verbatim}
+
+
+The syncFS() method uses the TRepid::Host::syncFS() method to save each
+host into its new filename.
+
+\paragraph*{host\label{host}\index{host}}
+\begin{verbatim}
+ Title   : host
+ Usage   : $host = $pop->host("adam")
+ Function: Return TRepid::Host object, by name
+ Example : 
+ Returns : TRepid::Host object
+ Args    : string (name)
+ Requires: POP
+\end{verbatim}
+
+
+Easy method to retrieve a host by its name.
+
+\subsubsection*{Methods that return list of names satisfying attribute choice\label{Methods_that_return_list_of_names_satisfying_attribute_choice}\index{Methods that return list of names satisfying attribute choice}}
+\paragraph*{wild\label{wild}\index{wild}}
+\begin{verbatim}
+ Title   : wild
+ Usage   : @names = $pop->wild
+ Function: 
+ Example :
+ Returns : List of TRepid::Host names
+ Args    : 
+ Requires: POP
+\end{verbatim}
+\paragraph*{gm\label{gm}\index{gm}}
+\begin{verbatim}
+ Title   : gm
+ Usage   : @names = $pop->gm
+ Function: 
+ Example : 
+ Returns : List of TRepid::Host names
+ Args    : 
+ Requires: POP
+\end{verbatim}
+\paragraph*{are\_dead\label{are_dead}\index{are\ dead}}
+\begin{verbatim}
+ Title   : are_dead
+ Usage   : @names = $pop->are_dead
+ Function: 
+ Example : 
+ Returns : List of TRepid::Host names
+ Args    : 
+ Requires: DEAD
+\end{verbatim}
+
+
+Cemetery. See the \_dead() method to update the list, prior to returning it.
+
+\paragraph*{not\_dead\label{not_dead}\index{not\ dead}}
+\begin{verbatim}
+ Title   : not_dead
+ Usage   : @names = $pop->not_dead
+ Function: 
+ Example : 
+ Returns : List of TRepid::Host names
+ Args    : 
+ Requires: POP
+\end{verbatim}
+
+
+not\_dead() returns a list of names, while size() returns an integer.
+
+\paragraph*{males\label{males}\index{males}}
+\begin{verbatim}
+ Title   : males
+ Usage   : @names = $pop->males
+ Function: 
+ Example : 
+ Returns : list of names
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{females\label{females}\index{females}}
+\begin{verbatim}
+ Title   : females
+ Usage   : @names = $pop->females
+ Function: 
+ Example : 
+ Returns : list of names
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{mature\label{mature}\index{mature}}
+\begin{verbatim}
+ Title   : mature
+ Usage   : @names = $pop->mature
+ Function: Returns list of names of sexually mature TRepid::Host
+ Example :
+ Returns : integer
+ Args    :
+ Requires: POP
+\end{verbatim}
+\paragraph*{are\_gender\label{are_gender}\index{are\ gender}}
+\begin{verbatim}
+ Title   : are_gender
+ Usage   : @names = $pop->are_gender
+ Function: 
+ Example : 
+ Returns : list of strings
+ Args    : [optional] list of names
+ Requires: POP
+\end{verbatim}
+\paragraph*{TE\_find\label{TE_find}\index{TE\ find}}
+\begin{verbatim}
+ Title   : TE_find
+ Usage   : @names = $pop->TE_find("te_family1")
+ Function: 
+ Example : 
+ Returns : list of strings
+ Args    : string to match TE name
+ Requires: POP
+\end{verbatim}
+\subsubsection*{Methods for data collection and Statistics\label{Methods_for_data_collection_and_Statistics}\index{Methods for data collection and Statistics}}
+\paragraph*{size\label{size}\index{size}}
+\begin{verbatim}
+ Title   : size
+ Usage   : $size = $pop->size
+ Function: Returns the population size
+ Example :
+ Returns : integer
+ Args    :
+ Requires: POP
+\end{verbatim}
+
+
+The size() method only accesses the SIZE attribute. To actually update
+the population size, use the \_size() method.
+
+\paragraph*{TE\_total\label{TE_total}\index{TE\ total}}
+\begin{verbatim}
+ Title   : TE_total
+ Usage   : $Total_TEs $pop->TE_total
+ Function: 
+ Example : 
+ Returns : integer
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{TE\_mean\label{TE_mean}\index{TE\ mean}}
+\begin{verbatim}
+ Title   : TE_mean
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : real
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{TE\_total\_active\label{TE_total_active}\index{TE\ total\ active}}
+\begin{verbatim}
+ Title   : TE_total_active
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : integer
+ Args    : 
+ Requires:
+\end{verbatim}
+\subsubsection*{Methods for results management\label{Methods_for_results_management}\index{Methods for results management}}
+\paragraph*{show\label{show}\index{show}}
+\begin{verbatim}
+ Title   : show
+ Usage   : print $pop->show
+ Function: Returns printable string for population display.
+ Example :
+ Returns : Formatted printable string of population for screen display.
+ Args    :
+ Requires: POP
+\end{verbatim}
+
+
+The show() method returns a printable string of TAB separated values
+format of each host currently alive in the population.
+
+
+
+* WARNING * Beware of show() on large populations - each individual
+  will take one line of screen, and with several thousands of
+  individuals it may not be what you want.
+
+\paragraph*{show\_summary\label{show_summary}\index{show\ summary}}
+\begin{verbatim}
+ Title   : show_summary
+ Usage   : print $pop->show
+ Function: Returns printable selected config parameters.
+ Example : 
+ Returns : Formatted printable string with population summary information
+ Args    : 
+ Requires: POP, DEAD
+\end{verbatim}
+\paragraph*{log\label{log}\index{log}}
+\begin{verbatim}
+ Title   : log
+ Usage   : $pop->log("message")
+ Function: update log queue on RAM and prints message to screen
+ Example : 
+ Returns : 
+ Args    : string (log message)
+ Requires:
+\end{verbatim}
+
+
+The log() method updates the log queue on memory. To save it do disk, use
+the synclog() method.
+
+\paragraph*{synclog\label{synclog}\index{synclog}}
+\begin{verbatim}
+ Title   : synclog
+ Usage   : $pop->synclog
+ Function: 
+ Example : 
+ Returns : 
+ Args    : 
+ Requires: LOG
+\end{verbatim}
+
+
+The synclog() method saves the log queue to disk in the file define in
+the \$log\_file var.
+
+\subsubsection*{Methods that update population attributes\label{Methods_that_update_population_attributes}\index{Methods that update population attributes}}
+\paragraph*{fitness\label{fitness}\index{fitness}}
+\begin{verbatim}
+ Title   : fitness
+ Usage   :
+ Function: Returns the population fitness
+ Example :
+ Returns : real
+ Args    : [optional] list of TRepid::Host names
+ Requires: [optional] POP
+\end{verbatim}
+
+
+The population fitness is defined here as the arithmetic mean of the
+hosts' fitnesses (average offspring number).
+
+\paragraph*{\_TE\_total\label{_TE_total}\index{\ TE\ total}}
+\begin{verbatim}
+ Title   : _TE_total
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : integer
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{\_size\label{_size}\index{\ size}}
+\begin{verbatim}
+ Title   : _size
+ Usage   : 
+ Function: Update SIZE
+ Example : 
+ Returns : integer
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{\_dead\label{_dead}\index{\ dead}}
+\begin{verbatim}
+ Title   : _dead
+ Usage   : 
+ Function: Updates the DEAD hash
+ Example : 
+ Returns : hash ref
+ Args    : 
+ Requires:
+\end{verbatim}
+\subsubsection*{Methods that update Hosts' attributes\label{Methods_that_update_Hosts_attributes}\index{Methods that update Hosts' attributes}}
+\paragraph*{age\_increment\label{age_increment}\index{age\ increment}}
+\begin{verbatim}
+ Title   : age_increment
+ Usage   : $pop->age_increment
+ Function: Increments the age of each alive host
+ Example :
+ Returns :
+ Args    :
+ Requires: POP
+\end{verbatim}
+
+
+Increments the age of all live hosts, remove dead hosts, updates total
+TE count.
+
+\paragraph*{\_syncfilename\label{_syncfilename}\index{\ syncfilename}}
+\begin{verbatim}
+ Title   : 
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : 
+ Args    : 
+ Requires:
+\end{verbatim}
+\subsubsection*{Functions and methods for returning random values suitable for
+attributes\label{Functions_and_methods_for_returning_random_values_suitable_for_attributes}\index{Functions and methods for returning random values suitable for
+attributes}}
+\paragraph*{\_rand\_age\label{_rand_age}\index{\ rand\ age}}
+\begin{verbatim}
+ Title   : _rand_age
+ Usage   : $age = TRepid::Population::_rand_age;
+ Function: 
+ Example : 
+ Returns : integer
+ Args    : none
+ Requires:
+\end{verbatim}
+
+
+Returns a random age integer to be used as attribute to a Host. Can
+be called as a function.
+
+\paragraph*{\_rand\_gender\label{_rand_gender}\index{\ rand\ gender}}
+\begin{verbatim}
+ Title   : _rand_gender
+ Usage   : $gender = TRepid::Population::_rand_gender;
+ Function: 
+ Example : 
+ Returns : gender
+ Args    : none
+ Requires:
+\end{verbatim}
+
+
+Returns a random gender string to be used as attribute to a Host. Can
+be called as a function.
+
+\paragraph*{\_rand\_host\_gender\label{_rand_host_gender}\index{\ rand\ host\ gender}}
+\begin{verbatim}
+ Title   : _rand_host_gender
+ Usage   : _rand_host_gender("M","adam","eve")
+           _rand_host_gender("F")
+ Function: Returns a random name satisfying the parameter gender
+ Example : 
+ Returns : string
+ Args    : [optional] list of names
+ Requires: POP
+\end{verbatim}
+\paragraph*{\_nextname\label{_nextname}\index{\ nextname}}
+\begin{verbatim}
+ Title   : _nextname
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : integer
+ Args    : 
+ Requires: POP, DEAD
+\end{verbatim}

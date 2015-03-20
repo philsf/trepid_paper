@@ -1,0 +1,67 @@
+\subsection{NAME\label{NAME}\index{NAME}}
+
+
+TRepid
+
+\subsection{DESCRIPTION\label{DESCRIPTION}\index{DESCRIPTION}}
+
+
+Main class for simulation of Transposon evolution
+
+\subsubsection*{Primary functions\label{Primary_functions}\index{Primary functions}}
+\paragraph*{prepare()\label{prepare_}\index{prepare()}}
+
+
+This function will load a previously existing population from disk, if
+one exists, or initialize a new population of otherwise. It will also
+make sure all required options are collected from trepid.conf, or that
+defaults are in usad.
+
+\paragraph*{simulate()\label{simulate_}\index{simulate()}}
+
+
+This function runs a simulation, consisting of several generations of
+the Host population, cf. defined in trepid.conf
+
+\paragraph*{save()\label{save_}\index{save()}}
+
+
+This function saves the population from memory to disk.
+
+\paragraph*{clean()\label{clean_}\index{clean()}}
+
+
+This function erases the population from memory.
+
+\paragraph*{run()\label{run_}\index{run()}}
+
+
+This is just a quick way to run automatically. It calls prepare(), then
+simulate().
+
+\subsubsection*{Secondary functions\label{Secondary_functions}\index{Secondary functions}}
+\paragraph*{non\_interactive\_preload()\label{non_interactive_preload_}\index{non\ interactive\ preload()}}
+
+
+This function does the initial configuring before saving options are
+parsed. This includes printing a header for the simulation and making
+sure the data directories are present and accessible.
+
+\paragraph*{interactive\_preload()\label{interactive_preload_}\index{interactive\ preload()}}
+
+
+This function asks questions on what to save after the simulation, if
+interactiveness is permitted. A non-interactive simulation will occur
+if any of the following occur:
+
+
+
+- all options are explicitly specified in trepid.conf
+- the "interactive" option is set to 0 in trepid.conf
+
+\paragraph*{save\_check()\label{save_check_}\index{save\ check()}}
+
+
+This function parses variables that are collected either from
+interactive\_preload or trepid.conf, and make sure they're usable.
+

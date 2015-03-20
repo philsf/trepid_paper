@@ -1,0 +1,595 @@
+\subsection{NAME\label{NAME}\index{NAME}}
+
+
+TRepid::Host
+
+\subsection{DESCRIPTION\label{DESCRIPTION}\index{DESCRIPTION}}
+
+
+Hosts class for TRepid.
+
+\subsubsection*{OBJECT ATTRIBUTES\label{OBJECT_ATTRIBUTES}\index{OBJECT ATTRIBUTES}}
+
+
+Atributes
+
+\paragraph*{NAME\label{NAME}\index{NAME}}
+
+
+Is a string, and it should be unique in the population. If the user
+lets the names be auto-generated, they will be sequential integers.
+
+\paragraph*{GENDER\label{GENDER}\index{GENDER}}
+
+
+Is a single character: M for Male and F for female.
+
+\paragraph*{FITNESS\label{FITNESS}\index{FITNESS}}
+
+
+The total count of offspring this host generated so far.
+
+\paragraph*{AGE\label{AGE}\index{AGE}}
+
+
+Is an integer. Offspring are auto-generated with age 0 (as oposed to
+1), and it can be increased until it reaches \$age\_max (which is set in
+TRepid::Conf
+
+\paragraph*{GM\label{GM}\index{GM}}
+
+
+Is an integer. Represents the total TE count in the host's genome.
+
+\paragraph*{STRAND1\label{STRAND1}\index{STRAND1}}
+
+
+The list of insertion sites. Is a reference to an array of TRepid::TE
+objects, or undef values. Strand1 is the dna strand originated from
+
+\paragraph*{STRAND2\label{STRAND2}\index{STRAND2}}
+
+
+See STRAND1
+
+\paragraph*{FILE\label{FILE}\index{FILE}}
+
+
+The original file name, if this individual existed on disk previous to
+simulation start. In this case, the host's attributes are loaded from
+the file (relative path).
+
+\paragraph*{NEWFILE\label{NEWFILE}\index{NEWFILE}}
+
+
+The name the file will have when it's saved. The filename will be
+updated at the end of the simulation to reflect any changes in the
+attributes (like age, for example).
+
+\subsection{METHODS\label{METHODS}\index{METHODS}}
+
+
+The following methods are available from this class. Internal methods
+are usually preceded with a \_
+
+\subsubsection*{Basic Methods\label{Basic_Methods}\index{Basic Methods}}
+\paragraph*{new\label{new}\index{new}}
+\begin{verbatim}
+ Title   : new
+ Usage   :
+ Function: 
+ Example :
+ Returns :
+ Args    :
+ Requires: FILE || NAME, GENDER, FITNESS, AGE, PARENTS, STRAND1, STRAND2
+\end{verbatim}
+\paragraph*{file\label{file}\index{file}}
+\begin{verbatim}
+ Title   : file
+ Usage   : $filename = $host->file;
+           file('adam-M-50-2');
+\end{verbatim}
+\begin{verbatim}
+ Function: Returns the filename if called without arguments
+           Sets filename if called with argument
+\end{verbatim}
+\begin{verbatim}
+ Example :
+ Returns : string
+ Args    : [optional] filename
+ Requires:
+\end{verbatim}
+\paragraph*{name\label{name}\index{name}}
+\begin{verbatim}
+ Title   : name
+\end{verbatim}
+\begin{verbatim}
+ Usage   : $name = name();
+           name('adam');
+\end{verbatim}
+\begin{verbatim}
+ Function: Returns the host name if called without arguments
+           Sets host name if called with argument
+\end{verbatim}
+\begin{verbatim}
+ Example :
+ Returns : string
+ Args    : [optional] string
+ Requires:
+\end{verbatim}
+\paragraph*{gender\label{gender}\index{gender}}
+\begin{verbatim}
+ Title   : gender
+\end{verbatim}
+\begin{verbatim}
+ Usage   : $gender = gender();
+           gender('M');
+\end{verbatim}
+\begin{verbatim}
+ Function: Returns the host gender if called without arguments
+           Sets host gender if called with argument
+\end{verbatim}
+\begin{verbatim}
+ Example :
+ Returns :
+ Args    :
+ Requires:
+\end{verbatim}
+
+
+Gender can be one of 'M' or 'F'.
+
+\paragraph*{age\label{age}\index{age}}
+
+
+Title   : age
+
+
+
+Usage   : \$age = age();
+          age(2);
+
+
+
+Function: 
+Example :
+Returns : integer
+Args    : [optional] integer
+ Requires:
+
+\paragraph*{fitness\label{fitness}\index{fitness}}
+\begin{verbatim}
+ Title   : fitness
+ Usage   : $fitness = fitness()
+          fitness(50)
+\end{verbatim}
+\begin{verbatim}
+ Function: 
+ Example :
+ Returns : integer
+ Args    : [optional] integer
+ Requires:
+\end{verbatim}
+
+
+The number of offpsring this ::Host has generated so far. It will be
+updated by Population::offspring()
+
+\paragraph*{strand1\label{strand1}\index{strand1}}
+\begin{verbatim}
+ Title   : strand1
+ Usage   :
+ Function: 
+ Example :
+ Returns : 
+ Args    : [optional] DNA strand
+ Requires:
+\end{verbatim}
+\paragraph*{strand2\label{strand2}\index{strand2}}
+\begin{verbatim}
+ Title   : strand2
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : 
+ Args    : [optional] DNA strand
+ Requires:
+\end{verbatim}
+\paragraph*{heritage\label{heritage}\index{heritage}}
+\begin{verbatim}
+ Title   : heritage
+ Usage   :
+ Function: Defines the genetic heritage of the offspring
+ Example :
+ Returns : DNA strand
+ Args    : [optional] two refs to DNA strands
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+
+
+The heritage() method randomly selects one DNA strand from each parent
+and injects one strand from each parent into the offspring as his own
+strands. Offspring's strand 1 comes from male parent, and strand 2
+comes from female parent.
+
+
+
+Each strand is a reference to an array of Bio::Seq objects, in no
+particular order.
+
+\paragraph*{recombine\label{recombine}\index{recombine}}
+\begin{verbatim}
+ Title   : recombine
+ Usage   : 
+ Function: Recombination of 
+ Example : 
+ Returns : DNA strand
+ Args    : [optional] two refs to DNA strands
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+
+
+The recombine() method returns a gamete after a 'crossing over'
+process. The gamete is just a STRAND.
+
+
+
+The particular method of recombining is choosen in the trepid.conf
+file, with the recombination\_model variable.
+
+\paragraph*{recombine\_allstep\label{recombine_allstep}\index{recombine\ allstep}}
+\begin{verbatim}
+ Title   : recombine_allstep
+ Usage   : 
+ Function: Recombination of 
+ Example : 
+ Returns : DNA strand
+ Args    : [optional] two refs to DNA strands
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+
+
+The recombine() method returns a gamete after a 'crossing over'
+process. The gamete is just a STRAND.
+
+\paragraph*{recombine\_2step\label{recombine_2step}\index{recombine\ 2step}}
+\begin{verbatim}
+ Title   : recombine_2step
+ Usage   : 
+ Function: Recombination of 
+ Example : 
+ Returns : DNA strand
+ Args    : [optional] two refs to DNA strands
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+
+
+The recombine() method returns a gamete after a 'crossing over'
+process. The gamete is just a STRAND.
+
+
+
+Chooses two insertion sites and swap the strands' sites between the two sites.
+
+\paragraph*{recombine\_1step\label{recombine_1step}\index{recombine\ 1step}}
+\begin{verbatim}
+ Title   : recombine_1step
+ Usage   : 
+ Function: Recombination of 
+ Example : 
+ Returns : DNA strand
+ Args    : [optional] two refs to DNA strands
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+
+
+The recombine() method returns a gamete after a 'crossing over'
+process. The gamete is just a STRAND.
+
+
+
+Chooses one insertion sites and swap the strands' sites after that site.
+
+\paragraph*{recombine\_none\label{recombine_none}\index{recombine\ none}}
+\begin{verbatim}
+ Title   : recombine_none
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : DNA strand
+ Args    : [optional] two refs to DNA strands
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+
+
+The recombine() method returns a gamete after a 'crossing over'
+process. The gamete is just a STRAND.
+
+
+
+This trivial recombination model does not recombine with crossover,
+and just returns one of the two strands at random.
+
+\paragraph*{TE\_excise\label{TE_excise}\index{TE\ excise}}
+\begin{verbatim}
+ Title   : TE_excise
+ Usage   :
+ Function: Excise a TE from the Host's genome
+ Example :
+ Returns : Boolean
+ Args    : extended site
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+\paragraph*{TE\_random\label{TE_random}\index{TE\ random}}
+\begin{verbatim}
+ Title   : TE_random
+ Usage   : 
+ Function: Select a random TE
+ Example : 
+ Returns : TRepid::TE object
+ Args    : 
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+
+
+Selects a random TE from either STRAND1 or STRAND2. If there are no
+TEs, returns false.
+
+\paragraph*{TE\_by\_extended\_site\label{TE_by_extended_site}\index{TE\ by\ extended\ site}}
+\begin{verbatim}
+ Title   : TE_by_extended_site
+ Usage   : 
+ Function: Return a TE given its extended site
+ Example : 
+ Returns : TRepid::TE object
+ Args    : Extended site
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+\paragraph*{TE\_active\label{TE_active}\index{TE\ active}}
+\begin{verbatim}
+ Title   : TE_active
+ Usage   : 
+ Function: Select a random active TE
+ Example : 
+ Returns : TRepid::TE object
+ Args    : 
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+
+
+Selects a random active TE from either STRAND1 or STRAND2
+
+\paragraph*{TE\_find\label{TE_find}\index{TE\ find}}
+\begin{verbatim}
+ Title   : TE_find
+ Usage   : $host->TE_find('transposon123')
+           $host->TE_find('^gypsy.*')
+ Function: Search TE by name (perl regexp).
+ Example : 
+ Returns : list of extended sites
+ Args    : string to match TE name
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+
+
+Case sensitive. See perldoc perlre and perldoc perlretut for more
+information on perl regexps.
+
+\paragraph*{TE\_sites\_list\label{TE_sites_list}\index{TE\ sites\ list}}
+\begin{verbatim}
+ Title   : TE_sites_list
+ Usage   :
+ Function: Return list of list of extended sites
+ Example :
+ Returns : array
+ Args    : [optional]  two refs to DNA strands
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+\paragraph*{TE\_active\_list\label{TE_active_list}\index{TE\ active\ list}}
+\begin{verbatim}
+ Title   : TE_active_list
+ Usage   : 
+ Function: Returns the list of active TEs' extended sites 
+ Example : 
+ Returns : array
+ Args    : 
+ Requires: STRAND1, STRAND2
+\end{verbatim}
+\paragraph*{parents\label{parents}\index{parents}}
+\begin{verbatim}
+ Title   : parents
+ Usage   : parents()
+           parents(["adam", "eve"])
+ Function: Returns the filename if called without arguments
+           Sets filename if called with argument
+\end{verbatim}
+\begin{verbatim}
+ Example :
+ Returns : arrayref to (father, mother) names
+ Args    : [optional] arrayref to (father, mother) names
+ Requires: PARENTS
+\end{verbatim}
+\paragraph*{newfile\label{newfile}\index{newfile}}
+\begin{verbatim}
+ Title   : newfile
+ Usage   : $newfile = newfile();
+           newfile('adam-M-50-4')
+\end{verbatim}
+\begin{verbatim}
+ Function: 
+ Example :
+ Returns :
+ Args    :
+ Requires:
+\end{verbatim}
+\paragraph*{is\_wild\label{is_wild}\index{is\ wild}}
+\begin{verbatim}
+ Title   : is_wild
+ Usage   :
+ Function: 
+ Example :
+ Returns : Boolean
+ Args    :
+ Requires:
+\end{verbatim}
+\paragraph*{is\_gm\label{is_gm}\index{is\ gm}}
+\begin{verbatim}
+ Title   : is_gm
+ Usage   :
+\end{verbatim}
+\begin{verbatim}
+ Function: Returns te TE count (non-zero is GM, zero is wild)
+           Sets death by excessive TE count
+\end{verbatim}
+\begin{verbatim}
+ Example :
+ Returns : integer
+ Args    : [optional] integer
+ Requires:
+\end{verbatim}
+
+
+Note: is\_gm() does only return the TE count, NOT update it.
+
+\paragraph*{is\_dead\label{is_dead}\index{is\ dead}}
+\begin{verbatim}
+ Title   : is_dead
+ Usage   :
+ Function: Returns/sets the dead value (non-zero is dead)
+ Example :
+ Returns : Boolean
+ Args    : [optional] Boolean
+ Requires:
+\end{verbatim}
+\paragraph*{is\_mature\label{is_mature}\index{is\ mature}}
+\begin{verbatim}
+ Title   : is_mature
+ Usage   :
+ Function: 
+ Example :
+ Returns : Boolean
+ Args    :
+ Requires:
+\end{verbatim}
+\paragraph*{age\_increment\label{age_increment}\index{age\ increment}}
+\begin{verbatim}
+ Title   : age_increment
+ Usage   :
+ Function: 
+ Example :
+ Returns :
+ Args    :
+ Requires:
+\end{verbatim}
+
+
+Increments age. Also updates the DEAD property, i.e., sets death by age, or transposition impact if necessary.
+
+\paragraph*{syncFS\label{syncFS}\index{syncFS}}
+\begin{verbatim}
+ Title   : syncFS
+ Usage   : $host->syncFS
+           $host->syncFS($file)
+\end{verbatim}
+\begin{verbatim}
+ Function: 
+ Example : 
+ Returns : NEWFILE (or FILE)
+ Args    : [optional] file name
+ Requires: NEWFILE (or FILE)
+\end{verbatim}
+
+
+The \_newfile() update (or newfile() directly) should be done
+previously to saving the object to disk. Normally, this is handled by
+Population::syncFS().
+
+
+
+If called with a parameter, it gets assigned to NEWFILE, which is the
+preferred filename to be used.
+
+\paragraph*{\_newfile\label{_newfile}\index{\ newfile}}
+\begin{verbatim}
+ Title   : _newfile
+ Usage   : Updates the NEWFILE attribute
+ Function: 
+ Example : 
+ Returns : string (NEWFILE)
+ Args    : 
+ Requires: NAME, AGE, GENDER, FITNESS, PARENTS
+\end{verbatim}
+
+
+Updates the NEWFILE attribute according to current attributes. For the
+accessor method, see the "newfile()" method.
+
+\paragraph*{\_write\_seqs\_fasta\label{_write_seqs_fasta}\index{\ write\ seqs\ fasta}}
+\begin{verbatim}
+ Title   : _write_seqs_fasta
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : string (filename)
+ Args    : 
+ Requires: NEWFILE||FILE, STRAND1, STRAND2
+\end{verbatim}
+\paragraph*{show\label{show}\index{show}}
+\begin{verbatim}
+ Title   : show
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : string
+ Args    : 
+ Requires: NAME, GENDER, AGE, FITNESS, GM, NEWFILE||FILE
+\end{verbatim}
+
+
+This method does not require the host to be alive, so should not be
+used to print individual information of whole populations. For that,
+use the table\_show() method below.
+
+\paragraph*{table\_show\label{table_show}\index{table\ show}}
+\begin{verbatim}
+ Title   : table_show
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : string
+ Args    : 
+ Requires: DEAD=0, NAME, GENDER, AGE, FITNESS, GM, NEWFILE||FILE
+\end{verbatim}
+
+
+The table\_show() method is used to print summarized information of
+individual hosts. See also TRepid::Population::show().
+
+\paragraph*{TE\_show\label{TE_show}\index{TE\ show}}
+\begin{verbatim}
+ Title   : TE_show
+ Usage   :
+ Function: 
+ Example :
+ Returns : string
+ Args    :
+ Requires:
+\end{verbatim}
+\paragraph*{fitness\_impact\label{fitness_impact}\index{fitness\ impact}}
+\begin{verbatim}
+ Title   : fitness_impact
+ Usage   : $lost_offspring = $h->fitness_impact
+ Function: 
+ Example : 
+ Returns : integer
+ Args    :
+ Requires:
+\end{verbatim}
+
+
+Returns the mean cost of fitness before mating. The fitness cost is given as the ammount of offpsring not created when this host mates due to transposition effects.
+
+
+
+This does not take into account offspring that are born dead because of deleterious transposition.
+

@@ -1,0 +1,93 @@
+\subsubsection*{NAME\label{NAME}\index{NAME}}
+
+
+TRepid::Population::Model
+
+\subsubsection*{DESCRIPTION\label{DESCRIPTION}\index{DESCRIPTION}}
+
+
+Population models class for TRepid
+
+\subsubsection*{Population models\label{Population_models}\index{Population models}}
+
+
+Functions that simulate population models.
+
+
+
+Currently the Logistic and the Hassel equations are available.
+
+\paragraph*{auto()\label{auto_}\index{auto()}}
+\begin{verbatim}
+ Title   : auto
+ Usage   :
+ Function: Determine the number of encounters, based on a model selected in trepid.conf
+ Example :
+ Returns : integer
+ Args    :
+ Requires: POP
+\end{verbatim}
+
+
+Autoselects the model from reproduction\_model configurable variable defined in trepid.conf
+
+\paragraph*{Logistic()\label{Logistic_}\index{Logistic()}}
+\begin{verbatim}
+ Title   : Logistic
+ Usage   :
+ Function: Determine the number of encounters, based on logistic model
+ Example :
+ Returns : integer
+ Args    :
+ Requires: POP
+\end{verbatim}
+\begin{verbatim}
+ dp = r(1-p/K)p
+\end{verbatim}
+\begin{verbatim}
+ where
+\end{verbatim}
+\begin{verbatim}
+ dp = total number of new individuals, which is the number of
+ encounters * mean number of offspring generated
+\end{verbatim}
+\begin{verbatim}
+ r = reproductive parameter
+\end{verbatim}
+\begin{verbatim}
+ K = carrying capacity of the population
+\end{verbatim}
+\begin{verbatim}
+ This function returns the number of reproductive encounters, instead
+ of the number of new individuals, i.e., dp/(mean number of offspring).
+\end{verbatim}
+\paragraph*{Hassel()\label{Hassel_}\index{Hassel()}}
+\begin{verbatim}
+ Title   : Hassel
+ Usage   :
+ Function: Determine the number of encounters, based on the Hassel equation (1975)
+ Example :
+ Returns : integer
+ Args    :
+ Requires: POP
+\end{verbatim}
+\begin{verbatim}
+ dp = rp(1+p/K)^beta
+\end{verbatim}
+\begin{verbatim}
+ where
+\end{verbatim}
+\begin{verbatim}
+ dp = total number of new individuals, which is the number of
+ encounters * mean number of offspring generated
+\end{verbatim}
+\begin{verbatim}
+ r = reproductive parameter
+\end{verbatim}
+\begin{verbatim}
+ K = carrying capacity of the population
+\end{verbatim}
+\begin{verbatim}
+ This function returns the number of reproductive encounters, instead
+ of the number of new individuals, i.e., dp/(mean number of offspring).
+\end{verbatim}

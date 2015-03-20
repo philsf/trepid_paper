@@ -1,0 +1,146 @@
+\subsubsection*{NAME\label{NAME}\index{NAME}}
+
+
+TRepid::Host::Genealogy
+
+\subsubsection*{DESCRIPTION\label{DESCRIPTION}\index{DESCRIPTION}}
+
+
+Genealogy tree of the population
+
+
+
+use this class to keep track of the real genealogy of the population
+
+
+
+use this class to reconstruct the most complete genealogy possible
+from a given host. The methods will recursively track down the
+parents, grand-parents, and so, until the most ancient antecessor of
+the given host, and generate output in a format provided by GraphViz
+(png, gif, jpeg...)
+
+\subsubsection*{METHODS\label{METHODS}\index{METHODS}}
+
+
+The following methods are available from this class. Internal methods
+are usually preceded with a \_
+
+\paragraph*{new\label{new}\index{new}}
+\begin{verbatim}
+ Title   : new
+ Usage   :
+ Function: 
+ Example : 
+ Returns : 
+ Args    : SUBJECT, FILE, FORMAT, VERBOSE
+ Requires:
+\end{verbatim}
+\paragraph*{\_get\_parents\label{_get_parents}\index{\ get\ parents}}
+\begin{verbatim}
+ Title   : _get_parents
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : father and mother's names (if any)
+ Args    : TRepid::Host name
+ Requires:
+\end{verbatim}
+
+
+The \_get\_parents() method is applied recursively to discover each past
+generation of the the Host's antecessors.
+
+
+
+Note: The default name returned if there is no father or mother is 0.
+
+\paragraph*{\_graph\_parents\label{_graph_parents}\index{\ graph\ parents}}
+\begin{verbatim}
+ Title   : _graph_parents
+ Usage   :
+\end{verbatim}
+\begin{verbatim}
+ Function: Create a connection between the Host (argument) and its
+           parents
+\end{verbatim}
+\begin{verbatim}
+ Example : _graph_parents("caim", "adam", "eve")
+ Returns : 
+ Args    : TRepid::Host' name, and parent's names
+ Requires:
+\end{verbatim}
+
+
+The \_graph\_parents() method create the nodes and (directed) edges
+between the host given as argument (by name) and its parents.
+
+\paragraph*{find\label{find}\index{find}}
+\begin{verbatim}
+ Title   : find
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : 
+ Args    : 
+ Requires: SUBJECT
+\end{verbatim}
+
+
+The find() method is the main Genealogy method. It constructs the most
+complete genealogy possible with available population.
+
+
+
+Currently only GraphViz.pm is supported.
+
+\paragraph*{save\label{save}\index{save}}
+\begin{verbatim}
+ Title   : save
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : 
+ Args    : 
+ Requires: FILE, FORMAT
+\end{verbatim}
+\paragraph*{file\label{file}\index{file}}
+\begin{verbatim}
+ Title   : file
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : 
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{format\label{format}\index{format}}
+\begin{verbatim}
+ Title   : format
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : 
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{subject\label{subject}\index{subject}}
+\begin{verbatim}
+ Title   : subject
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : 
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{verbose\label{verbose}\index{verbose}}
+\begin{verbatim}
+ Title   : verbose
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : 
+ Args    : 
+ Requires:
+\end{verbatim}

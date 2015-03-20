@@ -1,0 +1,301 @@
+\subsection{NAME\label{NAME}\index{NAME}}
+
+
+TRepid::TE
+
+\subsection{DESCRIPTION\label{DESCRIPTION}\index{DESCRIPTION}}
+
+
+Transposable Elements class for TRepid
+
+\subsection{METHODS\label{METHODS}\index{METHODS}}
+
+
+The following methods are available from this class. Internal methods
+are usually preceded with a \_
+
+\subsubsection*{General methods\label{General_methods}\index{General methods}}
+\paragraph*{new\label{new}\index{new}}
+\begin{verbatim}
+ Title   : new
+ Usage   : &new(HEADER=>">Transposon - active family:250:1:1")
+ Function: 
+ Example :
+ Returns :
+ Args    :
+ Requires:
+\end{verbatim}
+
+
+If HEADER is provided, it automatically calls \_parseheader() to update
+available attributes.
+
+\paragraph*{transpose\label{transpose}\index{transpose}}
+\begin{verbatim}
+ Title   : transpose
+ Usage   :
+ Function: 
+ Example :
+ Returns : TRepid::TE object
+ Args    :
+ Requires:
+\end{verbatim}
+
+
+Currently calls transpose\_copypaste()
+
+\paragraph*{transpose\_cutpaste\label{transpose_cutpaste}\index{transpose\ cutpaste}}
+\begin{verbatim}
+ Title   : transpose_cutpaste
+ Usage   :
+ Function: 
+ Example :
+ Returns : TRepid::TE object
+ Args    :
+ Requires:
+\end{verbatim}
+
+
+Creates a new copy, and reconstructs the original copy.
+
+\paragraph*{transpose\_copypaste\label{transpose_copypaste}\index{transpose\ copypaste}}
+\begin{verbatim}
+ Title   : transpose_copypaste
+ Usage   :
+ Function: 
+ Example :
+ Returns : TRepid::TE object
+ Args    :
+ Requires:
+\end{verbatim}
+
+
+Constructs a new copy, preserving original copy.
+
+\paragraph*{replicate\label{replicate}\index{replicate}}
+\begin{verbatim}
+ Title   : replicate
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : TRepid::TEs object
+ Args    : TRepid::TEs object
+ Requires: HEADER, sequence
+\end{verbatim}
+
+
+Will replicate the object according to give probability, or by
+default \$mutate\_prob (which is set in TRepid::Conf).
+
+\paragraph*{mutate\label{mutate}\index{mutate}}
+\begin{verbatim}
+ Title   : mutate
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : string (sequence)
+ Args    : [optional] probability
+ Requires: sequence
+\end{verbatim}
+
+
+Currently only JC is available. See TRepid::TE::Evolution.
+
+\subsubsection*{Attribute get/set methods\label{Attribute_get_set_methods}\index{Attribute get/set methods}}
+\paragraph*{name\label{name}\index{name}}
+\begin{verbatim}
+ Title   : name
+ Usage   :
+ Function: 
+ Example :
+ Returns : string
+ Args    :
+ Requires: NAME
+\end{verbatim}
+\paragraph*{header\label{header}\index{header}}
+\begin{verbatim}
+ Title   : header
+ Usage   :
+ Function: 
+ Example :
+ Returns : string
+ Args    :
+ Requires: HEADER
+\end{verbatim}
+\paragraph*{seq\label{seq}\index{seq}}
+\begin{verbatim}
+ Title   : seq
+ Usage   :
+ Function: 
+ Example :
+ Returns : string
+ Args    :
+ Requires: Bio::Seq sequence
+\end{verbatim}
+
+
+We can safely use the Bio::Seq version of this method.
+
+\paragraph*{is\_active\label{is_active}\index{is\ active}}
+\begin{verbatim}
+ Title   : is_active
+ Usage   :
+ Function: 
+ Example :
+ Returns : real
+ Args    : [optional] STATUS
+ Requires: STATUS
+\end{verbatim}
+
+
+Active or not.
+
+\paragraph*{strand\label{strand}\index{strand}}
+\begin{verbatim}
+ Title   : strand
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : integer
+ Args    : 
+ Requires: HEADER
+\end{verbatim}
+
+
+In which strand (1 or 2) is this sequence located in the host's DNA.
+
+\paragraph*{site\label{site}\index{site}}
+\begin{verbatim}
+ Title   : site
+ Usage   :
+ Function: 
+ Example :
+ Returns : integer
+ Args    :
+ Requires: SITE
+\end{verbatim}
+
+
+In which insertion site is this sequence located in the host's DNA.
+
+\paragraph*{extended\_site\label{extended_site}\index{extended\ site}}
+\begin{verbatim}
+ Title   : extended_site
+ Usage   :
+ Function: 
+ Example :
+ Returns : integer
+ Args    :
+ Requires: SITE, STRAND
+\end{verbatim}
+
+
+In which extended insertion site is this sequence located in the host's DNA.
+
+
+
+Extended sites are an ordenation of sites on both strands.
+
+\paragraph*{impact\label{impact}\index{impact}}
+\begin{verbatim}
+ Title   : impact
+ Usage   :
+ Function: Return the total fitness impact caused by the TE to the host
+ Example :
+ Returns : real
+ Args    :
+ Requires: SITE
+\end{verbatim}
+
+
+1 = 100\% (fatal impact).
+
+
+
+The total acumulated impact on the Host may be over 1, but has the
+same effect (death on birth).
+
+\subsubsection*{Methods that update TE attributes\label{Methods_that_update_TE_attributes}\index{Methods that update TE attributes}}
+\paragraph*{\_impact\label{_impact}\index{\ impact}}
+\begin{verbatim}
+ Title   : _impact
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : real
+ Args    : 
+ Requires: SITE
+\end{verbatim}
+\paragraph*{\_parse\_header\label{_parse_header}\index{\ parse\ header}}
+\begin{verbatim}
+ Title   : _parse_header
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : boolean
+ Args    : 
+ Requires: HEADER
+\end{verbatim}
+\paragraph*{\_header\label{_header}\index{\ header}}
+\begin{verbatim}
+ Title   : _header
+ Usage   : 
+ Function: Updates HEADER from other attributes
+ Example : 
+ Returns : string
+ Args    : 
+ Requires: NAME, SITE, STRAND, STATUS
+\end{verbatim}
+\paragraph*{\_name\label{_name}\index{\ name}}
+\begin{verbatim}
+ Title   : _name
+ Usage   : 
+ Function: Updates NAME from other attributes
+ Example : 
+ Returns : string
+ Args    : 
+ Requires: SITE, STRAND, STATUS
+\end{verbatim}
+
+
+Sets NAME to a unique (per host) string, based on other attributes
+
+\subsubsection*{Methods that return random attributes\label{Methods_that_return_random_attributes}\index{Methods that return random attributes}}
+\paragraph*{\_status\label{_status}\index{\ status}}
+\begin{verbatim}
+ Title   : _status
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : real
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{\_strand\label{_strand}\index{\ strand}}
+\begin{verbatim}
+ Title   : _strand
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : integer
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{\_site\label{_site}\index{\ site}}
+\begin{verbatim}
+ Title   : _site
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : integer
+ Args    : 
+ Requires:
+\end{verbatim}
+\subsubsection*{Useful Bio::Seq methods\label{Useful_Bio::Seq_methods}\index{Useful Bio::Seq methods}}
+\paragraph*{insert method name here...\label{insert_method_name_here_}\index{insert method name here...}}
+\paragraph*{seq\label{seq}\index{seq}}
+\paragraph*{revcom\label{revcom}\index{revcom}}
+\paragraph*{length\label{length}\index{length}}
+\paragraph*{alphabet\label{alphabet}\index{alphabet}}
+\paragraph*{desc\label{desc}\index{desc}}
+\paragraph*{display\_id\label{display_id}\index{display\ id}}

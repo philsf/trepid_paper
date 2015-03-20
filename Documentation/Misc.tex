@@ -1,0 +1,51 @@
+\paragraph*{dice\_roll\label{dice_roll}\index{dice\ roll}}
+\begin{verbatim}
+ Title   : dice_roll
+ Usage   : 
+ Function: 
+ Example : 
+ Returns : Boolean
+ Args    : probability
+ Requires:
+\end{verbatim}
+\paragraph*{say\label{say}\index{say}}
+\begin{verbatim}
+ Title   : say
+ Usage   : 
+ Function: Dirt implementation of perl6 built-in say() (also available in perl 5.10, and in Perl6::Say for 5.8)
+ Example : 
+ Returns : 
+ Args    : 
+ Requires:
+\end{verbatim}
+\paragraph*{generate\_nexus\label{generate_nexus}\index{generate\ nexus}}
+\begin{verbatim}
+ Title   : generate_nexus
+ Usage   : generate_nexus( filein.fasta, fileout.nex );
+ Function: Convert an align file to NEXUS format
+ Example : TRepid::Host::generate_nexus( "seqs.fasta", "seqs.nex" );
+ Returns : Boolean
+ Args    : 2 strings (filenames, input and output)
+ Requires:
+\end{verbatim}
+\paragraph*{parse\_extended\_site\label{parse_extended_site}\index{parse\ extended\ site}}
+\begin{verbatim}
+ Title   : parse_extended_site
+ Usage   : TRepid::Misc::parse_extended_site(123)
+ Function: Return (strand, site)
+ Example :
+ Returns : array
+ Args    : extended site
+ Requires:
+\end{verbatim}
+
+
+The "extended site" is the site is the TE is in STRAND1, and (total\_sites
++ site) if it's in STRAND2
+
+
+
+This function returns a list of two elements: the strand number (1 or
+2) for the first element, and the site in that strand for the second
+element.
+

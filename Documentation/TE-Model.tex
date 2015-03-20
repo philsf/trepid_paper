@@ -1,0 +1,86 @@
+\subsubsection*{NAME\label{NAME}\index{NAME}}
+
+
+TRepid::TE
+
+\subsubsection*{DESCRIPTION\label{DESCRIPTION}\index{DESCRIPTION}}
+
+
+Transposable Elements class for TRepid
+
+\subsubsection*{Transposition models\label{Transposition_models}\index{Transposition models}}
+
+
+constant, exponential, SKR
+
+
+
+head2 auto
+
+
+
+Autoselects the model from transposition\_model configurable variable
+defined in trepid.conf
+
+\subsubsection*{constant model\label{constant_model}\index{constant model}}
+
+
+Transposition happens with a fixed constant rate. Transposition rate
+is interpreted as the quantity of new copies (c).
+
+\subsubsection*{exponential model\label{exponential_model}\index{exponential model}}
+
+
+Transposition happens with a fixed rate proportional to the ammount of
+active TEs available.
+
+
+
+Usage:
+TRepid::TE::Model::exponential(c)
+
+\subsubsection*{SKR (Struchiner, Kidwell, Ribeiro 2005)\label{SKR_Struchiner_Kidwell_Ribeiro_2005_}\index{SKR (Struchiner, Kidwell, Ribeiro 2005)}}
+
+
+c(t+1) = ceil ( c(t) + c(t)*T0*U(c(t)))
+
+
+
+The paper suggests that function U(c) take one of the following three
+forms, that we implement here:
+
+
+
+U1(c) = 2\^{}(-c/C0.5)
+U2(c) = 1 - c\^{}5/(C0.5\^{}5 + c\^{}5)
+U3(c) = 1 + (c - .5/C0.5)
+
+
+
+To use the Ui function, give the i argument to the function
+
+
+
+Synopsis: To use U1(c), with c=3 and T0=2 ::SKR(3)
+
+
+
+Note: This function returns 
+dc = c(t+1) - c(t) = ceil ( c(t)*T0*U(c(t)) )
+
+
+
+Usage:
+with
+
+\subsubsection*{excise\label{excise}\index{excise}}
+
+
+Excision happens with a fixed rate proportional to the ammount of
+active TEs available.
+
+
+
+Usage:
+TRepid::TE::Model::excise(c)
+
