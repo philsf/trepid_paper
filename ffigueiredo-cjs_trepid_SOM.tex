@@ -356,22 +356,19 @@ FIXME: explain.
 \subsection{Output}
 \label{sec:output}
 
-Several files are produced after a simulation ends.
+Over the course of a simulation some output files are created: a log
+file, two CSV files (one for the demography and one with TE data), and
+if an individual can be sampled from the population in the last
+generation, it will be saved to disk in two files (in the formats
+FASTA and NEXUS). All of these files are prefixed with the simulation
+date, and a serial number, so files from successive simulations can be
+observed in chronological order.
 
 \subsubsection{Log file}
 \label{sec:output_log}
 
-Ao longo de uma simulação, são gerados um arquivo de log, dois
-arquivos CSV (um para a demografia e um com dados de TEs) e se um
-indivíduo puder ser amostrado para que suas sequências sejam
-analisadas, também será gerado um arquivo com a sequências no formato
-FASTA e um no formato NEXUS (já representando um alinhamento pronto
-para ser usado no BEAST). Todos os arquivos tem como prefixo a data
-seguida de um número serial, de modo que várias simulações
-consecutivas fiquem organizadas em ordem cronológica. Um exemplo com
-os arquivos output estão em anexo.
 
-FIXME: portuguese.
+FIXME: explain
 
 \subsubsection{CSV tables}
 \label{sec:output_csv}
