@@ -226,7 +226,7 @@ considered throughout the simulation. The contents of both chromosomes
 are merged, possibly overwriting a specific TE, in such cases where
 there is a TE in the same site in both parents' chromosomes. This is
 done by design in order to guarantee that there exists only one active
-TE in the haploid case, as oposed to what would be expected in the
+TE in the haploid case, as opposed to what would be expected in the
 diploid case in which one active element would be inherited from the
 father, and another element from the mother. In the next generation,
 two would be inherited from the father and two from the mother, in
@@ -246,7 +246,7 @@ neutral_sites = 200
 
 Sizes of each chromosome section. {\em Killer sites} are those that
 kill the individual immediately upon birth, if occupied by an
-element. {\em Severe sites} add fittess costs, and {\em Neutral sites}
+element. {\em Severe sites} add fitness costs, and {\em Neutral sites}
 are ignored.
 
 \begin{verbatim}
@@ -258,7 +258,7 @@ This value is incremented for each TE that occupies a {\em severe
   site}. The total impact is rounded up to the next integer. This
 total impact is the quantity of offspring the individual will not be
 able to produce, due to TE activity. In this sense, the total TE
-impact will be subtracted from the ammount of offspring the individual
+impact will be subtracted from the amount of offspring the individual
 will contribute to the population, and it is calculated for both the
 father and the mother.
 
@@ -267,7 +267,7 @@ father and the mother.
 transposition_model = "constant"
 \end{verbatim}
 
-The {\em constant} model produces the same ammount of new elements per
+The {\em constant} model produces the same amount of new elements per
 transposition event, i.e., in the gametogenesis. At least one active
 element is required for the creation of new copies.
 
@@ -278,7 +278,7 @@ transposition_rate=1
 
 The {\em transposition rate} parameter has different meanings,
 depending on which transposition model was selected. If the {\em
-  constant model} is being used, this parameter is the ammount of new
+  constant model} is being used, this parameter is the amount of new
 copies being created at each gametogenesis. In the case of the {\em
   exponential model} or the {\em SKR model} it is the probability that
 new copies will be created, i.e., the probability of occurrence of a
@@ -316,9 +316,9 @@ There are three {\em inactivation models} available. The {\em Master
   Gene} postulates that every new copy is automatically inactive
 (thus, has a {\em status} of 0). The {\em random} model samples a
 random number between 0 and the {\em status} of the template element,
-thus reducing the mean {\em status} over sucessive generations. The
+thus reducing the mean {\em status} over successive generations. The
 {\em progressive} model decreases the {\em status} of each new copy by
-a fixed ammount, also decreasing mean {\em status} over time. Small
+a fixed amount, also decreasing mean {\em status} over time. Small
 {\em status} values are truncated to 0.
 
 \begin{verbatim}
@@ -343,7 +343,7 @@ mutate_prob = 1
 
 The {\em mutate probability} is the probability that a evolutionary
 event will occur in the selected transposition event. This implies
-that at some ammount of point substitutions is bound to occur,
+that at some amount of point substitutions is bound to occur,
 although some might be silent substitutions.
 
 \begin{verbatim}
@@ -395,7 +395,7 @@ classes. Additionally, the whole generation algorithm can be bypassed
 and simulations can be manually run, step by step, and scrutinized in
 any way desired. One can change config parameters after a few
 generations for any of the models, or even the models themselves,
-insert or remove individuals in the population, etcetera.
+insert or remove individuals in the population, etc.
 
 The API documentation along with the complete list of functions and
 class and object methods are provided inline with the code and can be
@@ -612,7 +612,7 @@ modeled. The default values for maturation and longevity are
 appropriate to species that don't have generation overlap, such as
 most insects.
 
-(FIXME: mover para outra seção) The default value total offspring for
+(FIXME: move to another section) The default value total offspring for
 each reproductive encounter is also selected as to represent
 $r$-selected species with high fecundity and high mortality, such as
 insects.
@@ -944,7 +944,7 @@ several ways, and the item \ref{item:recombination} is related to the
 recombination model used to promote additional variability to the
 chromosome pool.
 
-FIXME: falta terminar essa seção.
+FIXME: complete this section
 
 The item \ref{item:transposition} is related to the availability of
 new TEs in the chromosomes (as defined by different \emph{loci} and
