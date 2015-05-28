@@ -244,58 +244,56 @@ severe_sites = 0
 neutral_sites = 200
 \end{verbatim}
 
-FIXME: portuguese.
-
-Obs: Tamanhos dos setores do cromossomo. Killer sites são os sites que
-matam o indivíduo imediatamente ao nascer, se algum estiver
-ocupado. Severe contabilizam custo de fitness e neutros não.
+Sizes of each chromosome section. {\em Killer sites} are those that
+kill the individual immediately upon birth, if occupied by an
+element. {\em Severe sites} add fittess costs, and {\em Neutral sites}
+are ignored.
 
 \begin{verbatim}
 # Fitness cumulative impact of transposition (default .05)
 severe_impact = .05
 \end{verbatim}
 
-FIXME: portuguese.
-
-Obs: Esse valor é somado para cada TE que ocupar uma posição num
-severe site. O total é arredondado para cima, e esse número inteiro
-será a quantidade de prole que aquele indivíduo não será capaz de
-gerar devido aos TEs. Obs2: esse valor é calculado para cada
-indivíduo, e portanto deve ser contabilizado tanto pra o pai como para
-a mãe.
+This value is incremented for each TE that occupies a {\em severe
+  site}. The total impact is rounded up to the next integer. This
+total impact is the quantity of offspring the individual will not be
+able to produce, due to TE activity. In this sense, the total TE
+impact will be subtracted from the ammount of offspring the individual
+will contribute to the population, and it is calculated for both the
+father and the mother.
 
 \begin{verbatim}
 # Transposition model: constant, exponential or SKR (default: SKR)
 transposition_model = "constant"
 \end{verbatim}
 
-FIXME: portuguese.
-
-Obs: O modelo constant acrescenta sempre a mesma quantidade de novas
-cópias em cada gametogênese, dado que exista pelo menos uma cópia
-ativa.
+The {\em constant} model produces the same ammount of new elements per
+transposition event, i.e., in the gametogenesis. At least one active
+element is required for the creation of new copies.
 
 \begin{verbatim}
 # Transposition rate for constant and exponential model (default: .5)
 transposition_rate=1
 \end{verbatim}
 
-FIXME: portuguese.
-
-Obs: A taxa de transposição tem significados diferentes para cada
-modelo. No caso do modelo constante, significa a quantidade de cópias
-novas a ser criadas. No caso do exponencial e do SKR, a probabilidade
-de que novas cópias serão criadas, isto é, a prob. de ocorrer um
-evento de transposição naquela gametogênese.
+The {\em transposition rate} parameter has different meanings,
+depending on which transposition model was selected. If the {\em
+  constant model} is being used, this parameter is the ammount of new
+copies being created at each gametogenesis. In the case of the {\em
+  exponential model} or the {\em SKR model} it is the probability that
+new copies will be created, i.e., the probability of occurrence of a
+transposition event in that gametogenesis.
 
 \begin{verbatim}
 # Excision rate for constant and exponential models
 excision_rate = 0
 \end{verbatim}
 
-FIXME: portuguese.
-
-Obs: análogo a taxa de transposição.
+The {\em excision rate} is analogous to the {\em transposition rate},
+but instead of contributing to the creation of new copies, if
+subtracts TEs from chromosomes. Both the possible values and meaning
+for each transposition model are analogous to the interpretation in
+the {\em transposition model}, as stated above.
 
 \begin{verbatim}
 # Deleterious threshold (default: severe + neutral)
@@ -310,16 +308,18 @@ FIXME: explain.
 inact_model = "mastergene"
 \end{verbatim}
 
-FIXME: portuguese.
+The activity {\em status} is represented by a number between 0 and
+1. Any positive number implies the element is active, while 0 means
+the element is inactive.
 
-Obs: A atividade (STATUS na documentação) é representada por um número
-entre 0 e 1. Qualquer número positivo representa um elemento
-ativo. Modelos de inativação: Master gene significa que TODA nova
-cópia é inativa. Random sorteia um número entre 0 e o status do TE que
-está gerando a cópia. Progressive diminui o status em razão
-constante. É usado um threshold inferior para que números muito
-pequenos sejam considerados zero, e portanto inativar cópias.
-
+There are three {\em inactivation models} available. The {\em Master
+  Gene} postulates that every new copy is automatically inactive
+(thus, has a {\em status} of 0). The {\em random} model samples a
+random number between 0 and the {\em status} of the template element,
+thus reducing the mean {\em status} over sucessive generations. The
+{\em progressive} model decreases the {\em status} of each new copy by
+a fixed ammount, also decreasing mean {\em status} over time. Small
+{\em status} values are truncated to 0.
 
 \begin{verbatim}
 # Invasion threshold for GM sub population (default: 0.9). Set to 1 to disable.
