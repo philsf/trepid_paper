@@ -94,9 +94,9 @@ Templates for the hosts with TEs.
 
 The Templates dir is where one or more genome templates are located,
 and used to create the GM (Genetically Modified, i.e. with TEs)
-subpopulation. If the user wants t ouse a GM population, at least one
+sub-population. If the user wants to use a GM population, at least one
 GM template must exist. If the templates directory is previously
-non-existant, a GM population won't be created, and in this case the
+non-existent, a GM population won't be created, and in this case the
 simulator aborts.
 
 If the configuration file is not found or is empty, default values
@@ -108,14 +108,14 @@ what parameters were set for each simulation in the log header.
 \label{sec:default_config}
 
 In this section we describe all of the variables definable in the
-confi file, showing the default values as illustration. These are the
+config file, showing the default values as illustration. These are the
 parameters used for a very simple simulation of a Master Gene model in
 a small host population that does not have generation overlap.
 
 \subsection{General}
 \label{sec:default_config_general}
 
-{\bf Simulation time and initial subpopulations}
+{\bf Simulation time and initial sub-populations}
 
 \begin{verbatim}
 #####################################
@@ -146,14 +146,14 @@ R_0 = 0
 The parameter \verb$it_max$ determines how many iterations of the model,
 i.e., how many generations will be simulated.
 
-The $F_0$ population is determined by three initial subpopulations. In
+The $F_0$ population is determined by three initial sub-populations. In
 these parameters, the notations inspired by the SIR epidemic model of
 the early prototypes were maintained. \verb$S_0$ symbolizes the
-initial wild subpopulation, \verb$I_0$ the initial GM subpopulation
+initial wild sub-population, \verb$I_0$ the initial GM sub-population
 (i.e. individuals that carry TEs) and \verb$R_0$ the Deceased or past
 individuals.
 
-If a population was previously saved to disk, the files wil be
+If a population was previously saved to disk, the files will be
 automatically read and the $F_0$ population will be constructed using
 those individuals. If the initial parameters for either of \verb$S_0$,
 \verb$I_0$ and \verb$R_0$ are greater than the pre-existing
@@ -393,7 +393,7 @@ FIXME: explain.
 Although the configuration file can provide a practical input for
 several simulation scenarios, some users might have more complex
 needs. Besides the configuration file there is an API which can be
-directly accessed by softwares, scripts or an interactive shell in
+directly accessed by software, scripts or an interactive shell in
 Perl language which facilitates step-by-step procedures, analysis,
 reanalysis and more detailed data acquisition.
 
@@ -403,7 +403,7 @@ classes. Additionally, the whole generation algorithm can be bypassed
 and simulations can be manually run, step by step, and scrutinized in
 any way desired. One can change config parameters after a few
 generations for any of the models, or even the models themselves,
-insert or remove individuals in the population, et cetera.
+insert or remove individuals in the population, etcetera.
 
 The API documentation along with the complete list of functions and
 class and object methods are provided inline with the code and can be
@@ -462,7 +462,7 @@ population.
 
 Age of sexual maturity and maximum lifespan are passed to the
 simulator as configuration parameters by the user. Default parameters
-for maturation, lifespan and offspring count reflect behaviour
+for maturation, lifespan and offspring count reflect behavior
 expected for strongly $r$-selected species with no generation overlap,
 suitable for modeling some insect populations such as mosquitoes or
 fruit flies.
@@ -502,10 +502,10 @@ fertile females.
 
 Couples are then pooled from the available mature population to
 satisfy the necessary number of reproductive encounters. We are
-modelling host species that are not monogamous, so males are chosen
+modeling host species that are not monogamous, so males are chosen
 from the population with replacement while females are chosen without
-replacement. This approximates the random mating behaviour (i.e., no
-spatial structure), while retaining the realistic behaviour that a
+replacement. This approximates the random mating behavior (i.e., no
+spatial structure), while retaining the realistic behavior that a
 given female can only copulate at most once per generation.
 
 %% Age of sexual maturity and expected number of offspring per couple are
@@ -943,7 +943,7 @@ populations \cite{HC98}. Since we're simulating small populations
 there is a sampling effect to be considered when an individual is
 chosen for reproduction. Should we simulate very large simulations the
 importance of sampling effects could be diminished, and we could
-approximate the behaviour of an infinite population (as in a
+approximate the behavior of an infinite population (as in a
 Hardy-Weinberg population).
 
 Since we're simulating sexual populations, we incorporate
@@ -1098,7 +1098,7 @@ be removed from the gamete.
 This model assumes an intrinsic self-regulation of TE copy number, and
 can assume various shapes and growth forms. The original article
 proposes that the form of the $U(c_n)$ function can be chosen as any
-functions that share the qualitative behaviour described, and suggests
+functions that share the qualitative behavior described, and suggests
 (and tests) three forms indexed as $U_1$, $U_2$ and $U_3$ that we
 reproduced in this framework.
 
@@ -1223,7 +1223,7 @@ The next two fields that contain integer numbers. The first is the
 {\bf chromosome} this particular TE is located. The total number of
 sites available can be chosen by the user, and the default is 100
 positions (from 0 to 99). There are always two chromosomes (denoted by
-the numbers 0 and 1) since we are modelling sexual diploid
+the numbers 0 and 1) since we are modeling sexual diploid
 populations.
 
 The last field is a real number, in the interval $[0,1]$. It describes
@@ -1265,9 +1265,6 @@ function for the TE family.
 %% - agent-based model \cite{Bon02}
 
 %% - phylodynamics (paper volz, papers claudio) \cite{VKP+09,SMT+09}
-
-
-
 
 \bibliographystyle{natbib}  % Style BST file
 \bibliography{ffigueiredo-cjs_trepid_bibtex}      % Bibliography file (usually '*.bib' )
