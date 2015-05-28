@@ -221,22 +221,16 @@ ploidy = 1
 The ploidy can be artificially set to diploid or haploid. Haploid
 populations are created in the following manner: upon creation of a
 new individual, the first chromosome comes from the father and the
-second from the mother, but since only one chromosome will be considered
-throughout the simulation. The contents of both chromosomes are
-merged, possibly overwriting
-
-FIXME: portuguese.
-
-Obs: A haploidia é feita da seguinte forma: na criação do novo
-indivíduo, o primeiro cromossomo vem do pai, e o segundo vem da mãe,
-mas apenas um cromossomo final será considerado. Dessa forma, é feita
-uma fusão dos dois cromossomos originais, possivelmente sobrescrevendo
-um TE, caso haja um TE no mesmo sítio em ambos os cromossomos
-originais. Isso foi feito para garantir que haja sempre um único TE
-ativo, ao contrário do que aconteceria no caso diploide, em que um
-ativo é herdado do pai, e outro da mãe. Na geração subsequente, dois
-seriam herdados do pai e dois da mão e assim por diante, em progressão
-geométrica.
+second from the mother, but since only one chromosome will be
+considered throughout the simulation. The contents of both chromosomes
+are merged, possibly overwriting a specific TE, in such cases where
+there is a TE in the same site in both parents' chromosomes. This is
+done by design in order to guarantee that there exists only one active
+TE in the haploid case, as oposed to what would be expected in the
+diploid case in which one active element would be inherited from the
+father, and another element from the mother. In the next generation,
+two would be inherited from the father and two from the mother, in
+geometric progression.
 
 \subsection{Transposition}
 \label{sec:default_config_transposition}
